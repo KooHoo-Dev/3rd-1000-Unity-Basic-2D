@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb79a4f87b94652bbdc3825db19a1cd, type: 3}
   m_Name: MyGameSetting
   m_EditorClassIdentifier: Assembly-CSharp::Study_OOP_And_Design_Pattern.Creational.GameSettings
-  BGMVolume: 0
-  SFXVolume: 0
-  GraphicQuality: 0
+  BGMVolume: 5.84
+  SFXVolume: 6.03
+  GraphicQuality: 306
