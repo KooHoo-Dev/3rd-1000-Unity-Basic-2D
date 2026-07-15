@@ -22,10 +22,11 @@ namespace Study_OOP_And_Design_Pattern.Creational
             return UnityEngine.Random.Range(0, 100);   
         }
         
-        public void Drop()
+        public Item Drop()
         {
             Item item = CreateDrop();
             Debug.Log($"[ItemDrop] {item.Name} !");
+            return item;
         }
     }
     
