@@ -1,29 +1,24 @@
-using Study_OOP_And_Design_Pattern.Structural.Bridge;
+using Study_OOP_And_Design_Pattern.Structural.Composite;
 using UnityEngine;
 
-public class WeaponBrideDemo : MonoBehaviour
+public class FileTreeDemo : MonoBehaviour
 {
-    private Sword sword = new Sword();
-    private Bow bow = new Bow(); 
-        
     private void Start()
     {
-        sword.SetEnchant(new FireEnchant());
-        sword.Attack();
-            
-        sword.SetEnchant(new IceEnchant());
-        sword.Attack();
-            
-        sword.SetEnchant(null);
-        sword.Attack();
-        
-        bow.SetEnchant(new FireEnchant());
-        bow.Attack();
+        Folder root = new Folder("A")
+            .Add(new File("교안A.txt", 4))
+            .Add(new Folder("B")
+                .Add(new File("교안B-1.txt", 4))
+                .Add(new File("교안B-2.txt", 4)))
+            .Add(new Folder("C")
+                .Add(new File("교안C-1.txt", 4)))
+            .Add(new Folder("D"))
+            .Add(new File("기타 교안 F-1", 16))
+            .Add(new File("기타 교안 F-2", 16))
+            .Add(new File("기타 교안 F-3", 16));
 
-        bow.SetEnchant(new IceEnchant());
-        bow.Attack();
-        
-        bow.SetEnchant(null);
-        bow.Attack();
+            
+        root.Print(0);
+        Debug.Log($"Size = {root.Size()}");
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Study_OOP_And_Design_Pattern.Structural.Composite
 {
@@ -36,14 +37,53 @@ namespace Study_OOP_And_Design_Pattern.Structural.Composite
 
     public class Folder : IFileNode
     {
+        private string name;
+        private List<IFileNode> children = new List<IFileNode>();
+        
+        public Folder(string name) { this.name = name; }
+
+        public Folder Add(IFileNode fileNode)
+        {
+            children.Add(fileNode);
+            return this;
+        }
+
         public int Size()
         {
-            throw new System.NotImplementedException();
+            int sum = 0;
+            for (int i = 0; i < children.Count; i++)
+                sum += children[i].Size();
+            return sum;
         }
 
         public void Print(int depth)
         {
-            throw new System.NotImplementedException();
+            string empty = new string(' ', depth * 2);
+            Debug.Log($"{empty} - {name} : size = {Size()}");
+
+            for (int i = 0; i < children.Count; i++)
+                children[i].Print(depth + 1);
+        }
+    }
+
+    public class FileTreeDemo : MonoBehaviour
+    {
+        private void Start()
+        {
+            Folder root = new Folder("A")
+                .Add(new File("교안A.txt", 4))
+                .Add(new Folder("B")
+                    .Add(new File("교안B-1.txt", 4))
+                    .Add(new File("교안B-2.txt", 4)))
+                .Add(new Folder("C")
+                    .Add(new File("교안C-1.txt", 4)))
+                .Add(new Folder("D"))
+                .Add(new File("기타 교안 F-1", 16))
+                .Add(new File("기타 교안 F-2", 16))
+                .Add(new File("기타 교안 F-3", 16));
+
+            
+            root.Print(0);
         }
     }
 }
