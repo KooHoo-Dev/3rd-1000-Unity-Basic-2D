@@ -1,24 +1,51 @@
 using Study_OOP_And_Design_Pattern.Structural.Composite;
 using UnityEngine;
 
-public class FileTreeDemo : MonoBehaviour
+public class GenericTreeDemo : MonoBehaviour
 {
     private void Start()
     {
-        Folder root = new Folder("A")
-            .Add(new File("교안A.txt", 4))
-            .Add(new Folder("B")
-                .Add(new File("교안B-1.txt", 4))
-                .Add(new File("교안B-2.txt", 4)))
-            .Add(new Folder("C")
-                .Add(new File("교안C-1.txt", 4)))
-            .Add(new Folder("D"))
-            .Add(new File("기타 교안 F-1", 16))
-            .Add(new File("기타 교안 F-2", 16))
-            .Add(new File("기타 교안 F-3", 16));
-
+        TreeNode<string> root = new TreeNode<string>("사장");
             
-        root.Print(0);
-        Debug.Log($"Size = {root.Size()}");
+        TreeNode<string> dev = new TreeNode<string>("개발 팀장");
+        dev.Add("클라이언트 A");
+        dev.Add("클라이언트 B");
+        dev.Add("서버 A");
+            
+        TreeNode<string> gameDesign = new TreeNode<string>("기획 팀장");
+        gameDesign.Add("시스템 기획자 A");
+        gameDesign.Add("시스템 기획자 B");
+        gameDesign.Add("밸런스 기획자 A");
+        gameDesign.Add("콘텐츠 기획자 A");
+        gameDesign.Add("콘텐츠 기획자 B");
+        gameDesign.Add("콘텐츠 기획자 C");
+        gameDesign.Add("레벨 디자이너 A");
+            
+        TreeNode<string> art = new TreeNode<string>("아트 팀장");
+        art.Add("아트 디렉터");
+        art.Add("Environment Artist A");
+        art.Add("Environment Artist B");
+        art.Add("Character Artist B");
+        art.Add("Character Artist B");
+
+        root.Children.Add(dev);
+        root.Children.Add(gameDesign);
+        root.Children.Add(art);
+            
+        root.ForEach(PrintPosition,0);
+        Debug.Log("======================");
+        root.ForEach(Print,0);
+    }
+
+    private void PrintPosition(string str, int depth)
+    {
+        string empty = new string(' ', depth * 2);
+        Debug.Log($"{empty} - {str}");
+    }
+        
+    private void Print(string str, int depth)
+    {
+        string empty = new string(' ', depth * 2);
+        Debug.Log($"{empty} - {depth}");
     }
 }
