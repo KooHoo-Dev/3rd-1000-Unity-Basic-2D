@@ -10,7 +10,7 @@ namespace Study_OOP_And_Design_Pattern.Structural.Decorator
     public interface IStat 
     {
         int Attack { get; } int Hp { get; } int Speed { get; }
-        IStat GetStat(IStat stat);
+        Stat GetStat(Stat stat);
     }
 
     public class Stat : IStat
@@ -26,7 +26,7 @@ namespace Study_OOP_And_Design_Pattern.Structural.Decorator
             Speed = speed;
         }
         
-        public IStat GetStat(IStat current) { return this; }
+        public Stat GetStat(Stat current) { return this; }
         public static IStat operator +(Stat a, Stat b)
         {
             Stat reval = 
@@ -52,9 +52,14 @@ namespace Study_OOP_And_Design_Pattern.Structural.Decorator
         
         private List<IStat> buffList = new List<IStat>();
 
+        public DecoHandler(Stat baseStat)
+        {
+            this.baseStat = baseStat;
+        }
+        
         private IStat Calculate()
         {
-            IStat stat = new Stat(0,0,0);
+            Stat stat = new Stat(0,0,0);
 
             for (int i = 0; i < buffList.Count; i++)
                 stat = buffList[i].GetStat(stat);
@@ -63,13 +68,13 @@ namespace Study_OOP_And_Design_Pattern.Structural.Decorator
         }
         
         // 버프 추가는 단순하게 구현
-        private void Add(IStat buffDebuff) 
+        public void Add(IStat buffDebuff) 
         {
             buffList.Add(buffDebuff);
         }
 
         // 지울때는 타입검사를 해서 먼저 들어온 타입이 없어지도록 설정
-        private void Remove(Type type)
+        public void Remove(Type type)
         {
             for (int i = 0; i < buffList.Count; i++)
             {
@@ -85,10 +90,69 @@ namespace Study_OOP_And_Design_Pattern.Structural.Decorator
         public abstract int Hp { get; }
         public abstract int Speed { get; }
 
-        public abstract IStat GetStat(IStat stat);
+        public abstract Stat GetStat(Stat stat);
     }
     
+    public class AttackBoost : StatDecorator
+    {
+        public override int Attack { get; } = 5;
+        public override int Hp { get; }
+        public override int Speed { get; }
+        
+        public override Stat GetStat(Stat stat)
+        {
+            return new Stat(stat.Attack + Attack, stat.Hp + Hp, stat.Speed + Speed);
+        }
+    }
+
+    public class AttackDecrease : StatDecorator
+    {
+        public override int Attack { get; } = -5;
+        public override int Hp { get; }
+        public override int Speed { get; }
+        
+        public override Stat GetStat(Stat stat)
+        {
+            return new Stat(stat.Attack + Attack, stat.Hp + Hp, stat.Speed + Speed);
+        }
+    }
     
+    public class HpBoost : StatDecorator
+    {
+        public override int Attack { get; }
+        public override int Hp { get; } = 100;
+        public override int Speed { get; }
+        
+        public override Stat GetStat(Stat stat)
+        {
+            return new Stat(stat.Attack + Attack, stat.Hp + Hp, stat.Speed + Speed);
+        }
+    }
     
-    
+    public class StatBuffDemo : MonoBehaviour
+    {
+        private void Start()
+        {
+            Stat baseStat = new Stat(10,100,1);
+            DecoHandler handler = new DecoHandler(baseStat);
+        
+            handler.Add(new AttackBoost());
+            handler.Add(new AttackBoost());
+            IStat added = handler.GetAdded();
+            Debug.Log($"[Added_1] {added.Attack},  {added.Hp}, {added.Speed}");
+            //====================
+            handler.Add(new HpBoost());
+            handler.Add(new HpBoost());
+            added = handler.GetAdded();
+            Debug.Log($"[Added_2] {added.Attack},  {added.Hp}, {added.Speed}");
+            //====================
+            handler.Remove(typeof(AttackBoost)); // 10 -> 5로 감소
+            added = handler.GetAdded();
+            Debug.Log($"[Added_3] {added.Attack},  {added.Hp}, {added.Speed}");
+        
+            //====================
+            IStat current = handler.GetCurrent();
+            Debug.Log($"{current.Attack},  {current.Hp}, {current.Speed}");
+        }
+    }
 }

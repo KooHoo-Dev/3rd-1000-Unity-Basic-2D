@@ -1,51 +1,31 @@
-using Study_OOP_And_Design_Pattern.Structural.Composite;
+using Study_OOP_And_Design_Pattern.Structural.Decorator;
 using UnityEngine;
 
-public class GenericTreeDemo : MonoBehaviour
+public class StatBuffDemo : MonoBehaviour
 {
     private void Start()
     {
-        TreeNode<string> root = new TreeNode<string>("사장");
-            
-        TreeNode<string> dev = new TreeNode<string>("개발 팀장");
-        dev.Add("클라이언트 A");
-        dev.Add("클라이언트 B");
-        dev.Add("서버 A");
-            
-        TreeNode<string> gameDesign = new TreeNode<string>("기획 팀장");
-        gameDesign.Add("시스템 기획자 A");
-        gameDesign.Add("시스템 기획자 B");
-        gameDesign.Add("밸런스 기획자 A");
-        gameDesign.Add("콘텐츠 기획자 A");
-        gameDesign.Add("콘텐츠 기획자 B");
-        gameDesign.Add("콘텐츠 기획자 C");
-        gameDesign.Add("레벨 디자이너 A");
-            
-        TreeNode<string> art = new TreeNode<string>("아트 팀장");
-        art.Add("아트 디렉터");
-        art.Add("Environment Artist A");
-        art.Add("Environment Artist B");
-        art.Add("Character Artist B");
-        art.Add("Character Artist B");
-
-        root.Children.Add(dev);
-        root.Children.Add(gameDesign);
-        root.Children.Add(art);
-            
-        root.ForEach(PrintPosition,0);
-        Debug.Log("======================");
-        root.ForEach(Print,0);
-    }
-
-    private void PrintPosition(string str, int depth)
-    {
-        string empty = new string(' ', depth * 2);
-        Debug.Log($"{empty} - {str}");
-    }
+        Stat baseStat = new Stat(10,100,1);
+        DecoHandler handler = new DecoHandler(baseStat);
         
-    private void Print(string str, int depth)
-    {
-        string empty = new string(' ', depth * 2);
-        Debug.Log($"{empty} - {depth}");
+        handler.Add(new AttackBoost());
+        handler.Add(new AttackBoost());
+        IStat added = handler.GetAdded();
+        Debug.Log($"[Added_1] {added.Attack},  {added.Hp}, {added.Speed}");
+        //====================
+        handler.Add(new HpBoost());
+        handler.Add(new HpBoost());
+        added = handler.GetAdded();
+        Debug.Log($"[Added_2] {added.Attack},  {added.Hp}, {added.Speed}");
+        //====================
+        handler.Remove(typeof(AttackBoost)); // 10 -> 5로 감소
+        added = handler.GetAdded();
+        Debug.Log($"[Added_3] {added.Attack},  {added.Hp}, {added.Speed}");
+        
+        
+        
+        //====================
+        IStat current = handler.GetCurrent();
+        Debug.Log($"{current.Attack},  {current.Hp}, {current.Speed}");
     }
 }
