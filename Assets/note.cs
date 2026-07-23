@@ -6,34 +6,26 @@ using UnityEngine.InputSystem;
 
 public class CoffeeDemo : MonoBehaviour
 {
-    ICoffee coffee = new Espresso();
-    
-    private void Start()
-    {
-        coffee.Price(); // 3000원
-        coffee.Description(); // 에스프레소
-            
-        Debug.Log($"[Coffee] 가격 : {coffee.Price()}, {coffee.Description()}");
-    }
+    public Vector2 Origin;
+    public float CellSize;
 
+    public Vector2Int inputIndex;
+    
     private void Update()
     {
-        if (SimpleInput.GetKeyDown(Key.Digit1))
+        if (SimpleInput.GetKeyDown(Key.Space))
         {
-            coffee = new Milk(coffee);
-            Debug.Log($"[Coffee] 가격 : {coffee.Price()}, {coffee.Description()}");
+            var result = CellToWorld(inputIndex);
+            Debug.Log(result);
         }
-        
-        if (SimpleInput.GetKeyDown(Key.Digit2))
-        {
-            coffee = new Shot(coffee);
-            Debug.Log($"[Coffee] 가격 : {coffee.Price()}, {coffee.Description()}");
-        }
-        
-        if (SimpleInput.GetKeyDown(Key.Digit3))
-        {
-            coffee = new Ice(coffee);
-            Debug.Log($"[Coffee] 가격 : {coffee.Price()}, {coffee.Description()}");
-        }
+    }
+
+    public Vector3 CellToWorld(Vector2Int cellIndex)
+    {
+        // 0.5f = 월드 좌표 중앙 보정값
+        float x = Origin.x + (cellIndex.x + 0.5f) * CellSize;
+        float y = Origin.y + (cellIndex.y + 0.5f)* CellSize;
+            
+        return new Vector3(x, y, 0);
     }
 }
