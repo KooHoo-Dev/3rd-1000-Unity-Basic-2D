@@ -39,7 +39,7 @@ namespace Study.MiniDefence
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    tiles[x, y] = new Tile(TileKind.Buildable);
+                    tiles[x, y] = new Tile( new Vector2Int(x,y), TileKind.Buildable);
                 }
             } 
         }
@@ -158,7 +158,7 @@ namespace Study.MiniDefence
             {
                 for (int x = 0; x < grid.Width; x++)
                 {
-                    Tile tile = new Tile(kinds[x, y]);
+                    Tile tile = new Tile(new Vector2Int(x,y), kinds[x, y]);
                     tile.Kind = kinds[x, y];
                     grid.tiles[x, y] = tile;
                 }
@@ -183,7 +183,8 @@ namespace Study.MiniDefence
             {
                 for (int x = 0; x < grid.Width; x++)
                 {
-                    Tile tile = new Tile(kindList[y * grid.Width + x]);
+                    Tile tile = new Tile(new Vector2Int(x,y),
+                        kindList[y * grid.Width + x]);
                     tile.Kind = kindList[y * grid.Width + x];
                     grid.tiles[x, y] = tile;
                 }
