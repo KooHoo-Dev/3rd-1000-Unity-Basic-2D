@@ -17,5 +17,14 @@ namespace Study.MiniDefence
         public List<Vector3> RoutePoint = new List<Vector3>(); // 적 경로 좌표가 됩니다.
 
 
+        public void ImportFrom
+            (SquareGrid grid, List<Vector3> routePoints)
+        {
+            Height = grid.Height;
+            Width = grid.Width;
+            CellSize = grid.CellSize;
+            TileKinds = grid.ToKindList();
+            routePoints = routePoints;
+        }
     }
 }

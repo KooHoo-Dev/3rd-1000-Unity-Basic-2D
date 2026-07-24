@@ -51,6 +51,8 @@ namespace Study.MiniDefence
         private TileKind[,] kinds;
         private SpriteRenderer[,] renderers;
         private MapData mapData;
+
+        private SquareGrid grid;
         
         # region Private Method
         
@@ -90,6 +92,8 @@ namespace Study.MiniDefence
         private void SyncMapData()
         {
             
+            
+            mapData.ImportFrom(grid, null);
         }
         
         # endregion
@@ -105,6 +109,7 @@ namespace Study.MiniDefence
             kinds = new TileKind[width, height];
             renderers = new SpriteRenderer[width, height];
             
+            // 칸마다 종류를 정하고 그림(타일 오브젝트)을 만든다.
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
@@ -114,10 +119,15 @@ namespace Study.MiniDefence
                 }
             }
 
+            // 다 그린 뒤에 마지막으로 그리드를 완성(생성)한다.
+            grid = SquareGrid.FromKinds(mapRoot.transform.position, cellSize, kinds);
+            
+            // 루트에 맵 정보(MapData)를 붙이고, 완성된 그리드에서 정보를 옮긴다.
             mapData = mapRoot.AddComponent<MapData>();
             SyncMapData();
             
 
+            // 타일 자체를 만들지는 않음
             void CreateTile(Vector2Int coord, TileKind kind)
             {
                 GameObject go = new GameObject($"Tile_{coord.x}_{coord.y}");
