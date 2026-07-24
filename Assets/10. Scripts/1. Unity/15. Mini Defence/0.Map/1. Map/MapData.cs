@@ -16,6 +16,8 @@ namespace Study.MiniDefence
         public List<TileKind> TileKinds =  new List<TileKind>();
         public List<Vector3> RoutePoint = new List<Vector3>(); // 적 경로 좌표가 됩니다.
 
+        public TileKind[,] grid;
+        
 
         public void ImportFrom
             (SquareGrid grid, List<Vector3> routePoints)

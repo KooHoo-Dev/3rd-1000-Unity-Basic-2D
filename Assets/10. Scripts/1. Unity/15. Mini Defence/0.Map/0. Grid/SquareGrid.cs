@@ -120,6 +120,7 @@ namespace Study.MiniDefence
             return new Vector3(x, y, 0);
         }
 
+        // 아래의 함수는 타일 정보를 직렬화 하는 메소드가 됩니다
         public List<TileKind> ToKindList()
         {
             List<TileKind> kindList = new List<TileKind>();
