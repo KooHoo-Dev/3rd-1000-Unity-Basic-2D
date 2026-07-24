@@ -1,31 +1,40 @@
 using System;
+using System.Collections.Generic;
+using DG.Tweening;
 using Study_OOP_And_Design_Pattern.Structural.Decorator;
+using Study.MiniDefence;
 using Study.Utilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Jay;
 
-public class CoffeeDemo : MonoBehaviour
+public class RailFollower : MonoBehaviour
 {
-    public Vector2 Origin;
-    public float CellSize;
+    public MapData data;
+    private List<Vector3> routePoints = new List<Vector3>();
+    private int currentIndex = 0;
 
-    public Vector2Int inputIndex;
+    public float speed;
     
+    private void Start()
+    {
+        routePoints = data.GetWorldRoutePoints();
+    }
+
     private void Update()
     {
+        if (transform.IsSamePosition(routePoints[currentIndex], 0.1f))
+        {
+            currentIndex++;
+            if(currentIndex >= routePoints.Count) currentIndex = 0; 
+        }
+
         if (SimpleInput.GetKeyDown(Key.Space))
         {
-            var result = CellToWorld(inputIndex);
-            Debug.Log(result);
+            transform.DOMove(routePoints[currentIndex], 0.5f);
         }
+        
     }
-
-    public Vector3 CellToWorld(Vector2Int cellIndex)
-    {
-        // 0.5f = 월드 좌표 중앙 보정값
-        float x = Origin.x + (cellIndex.x + 0.5f) * CellSize;
-        float y = Origin.y + (cellIndex.y + 0.5f)* CellSize;
-            
-        return new Vector3(x, y, 0);
-    }
+    
+    
 }

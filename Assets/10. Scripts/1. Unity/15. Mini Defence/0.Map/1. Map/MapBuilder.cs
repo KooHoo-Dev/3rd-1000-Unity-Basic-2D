@@ -190,6 +190,7 @@ namespace Study.MiniDefence
             HashSet<Vector3> visitedPathTiles = new HashSet<Vector3>();
             
             List<Vector3> routePoints = new List<Vector3>();
+            routePoints.Add(grid.CellToWorld(spawn));
 
             // --- 아래부터 본로직 ---
             
@@ -244,6 +245,7 @@ namespace Study.MiniDefence
                 current = next;
             }
 
+            routePoints.Add(grid.CellToWorld(goal));
             return routePoints;
         }
         
