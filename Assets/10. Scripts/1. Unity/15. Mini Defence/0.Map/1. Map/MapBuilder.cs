@@ -52,7 +52,8 @@ namespace Study.MiniDefence
         private SpriteRenderer[,] renderers;
         private MapData mapData;
         
-
+        # region Private Method
+        
         private Vector3 CellToCenterLocal(Vector2Int c)
         {
             // 셀 중심좌표 위치 보정
@@ -74,6 +75,15 @@ namespace Study.MiniDefence
                 _ => buildableColor
             };
         }
+        
+        TileKind KindOf(Vector2Int coord)
+        {
+            if (coord == spawnTile) return TileKind.Spawn;
+            else if (coord == goalTile) return TileKind.Goal;
+            return TileKind.Buildable;
+        }
+        
+        # endregion
         
         # region MapData Method
 
@@ -120,13 +130,6 @@ namespace Study.MiniDefence
                 
                 kinds[coord.x, coord.y] = kind;
                 renderers[coord.x, coord.y] = sr;
-            }
-
-            TileKind KindOf(Vector2Int coord)
-            {
-                if (coord == spawnTile) return TileKind.Spawn;
-                else if (coord == goalTile) return TileKind.Goal;
-                return TileKind.Buildable;
             }
         }
 
