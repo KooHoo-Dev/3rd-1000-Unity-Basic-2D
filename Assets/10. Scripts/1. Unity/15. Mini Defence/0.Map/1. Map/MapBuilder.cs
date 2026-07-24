@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using Study.Utilities;
 using UnityEngine.InputSystem;
 
 #if UNITY_EDITOR
@@ -49,10 +50,92 @@ namespace Study.MiniDefence
 
         // 칸 상태는 칸마다 컴포넌트를 붙이는게 아니라 배열로 따로 관리한다.
         private TileKind[,] kinds;
-        private SpriteRenderer[,] renderers;
+        
         private MapData mapData;
 
         private SquareGrid grid;
+        private SpriteRenderer[,] renderers;
+
+        private void Start() => GenerateMap();
+
+        #region Painting
+
+        private void Update()
+        {
+            // 그리드가 생성되지 않았다면 페인팅 기능을 이용하지 못하게 한다.
+            if (grid == null) return;
+
+            bool left = SimpleInput.GetMouseButton(SimpleInput.MouseButton.Left);
+            bool right = SimpleInput.GetMouseButton(SimpleInput.MouseButton.Right);
+
+            if (left == false && right == false) return;
+
+            // 스크린 좌표 가지고 와서
+            Vector2 screen = SimpleInput.GetMousePosition();
+            // 씬의 월드 좌표로 변환
+            Vector3 world = paintCamera.ScreenToWorldPoint(new Vector3(screen.x, screen.y, 0));
+            // Grid좌표로 변환
+            Vector2Int coord = grid.WorldToCell(world);
+            
+            // 올바른 coord좌표를 얻었다면
+            if (grid.InBounds(coord))
+            {
+                Paint(coord, paintKind);
+            }
+        }
+
+        private void Paint(Vector2Int coord, TileKind kind)
+        {
+            // 이 함수는 시작할때부터 무조건 유효한 값을 가지고 시작합니다.
+            // 따라서 grid.InBounds를 검사할 필요가 없다.
+            // 하지만 넣고싶으면 넣으셔도 무방(아래처럼)
+            // if (grid.InBounds(coord) == false) return;
+            
+            Tile tile = grid.GetTileOrNull(coord);
+            // 해당 타일의 kind가 매개변수 kind와 동일하다면 return;
+            if (tile.Kind == kind) return;
+            
+            // 스폰/목표 타일은 맵에 하나만 존재하기 때문에
+            // 색칠 변경이 일어날 경우 이전에 있었던 타일을 BuildAble로 바꿔준다
+            if (kind == TileKind.Spawn)
+            {
+                // 현재 spawnTile의 종류가 TileKind.Spawn인지 검사하고 
+                if (IsKindAt(spawnTile, TileKind.Spawn))
+                {
+                    // 맞다면 바꿔준다
+                    ApplyKind(grid.GetTileOrNull(spawnTile), TileKind.Buildable);
+                }
+                spawnTile = coord;
+            }
+            else if (kind == TileKind.Goal)
+            {
+                // 현재 spawnTile의 종류가 TileKind.Spawn인지 검사하고 
+                if (IsKindAt(goalTile, TileKind.Goal))
+                {
+                    // 맞다면 바꿔준다
+                    ApplyKind(grid.GetTileOrNull(goalTile), TileKind.Buildable);
+                }
+                
+                goalTile = coord;
+            }
+            
+            ApplyKind(tile, kind);
+        }
+
+        // 한 tile의 종류와 색을 결정한다.
+        private void ApplyKind(Tile tile, TileKind kind)
+        {
+            tile.Kind = kind;
+            renderers[tile.Coord.x, tile.Coord.y].color = ColorOf(tile.Kind);
+        }
+
+        private bool IsKindAt(Vector2Int coord, TileKind kind)
+        {
+            if (grid.InBounds(coord) == false) return false;
+            return grid.GetTileOrNull(coord).Kind == kind;
+        }
+
+        #endregion
         
         # region Private Method
         
