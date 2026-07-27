@@ -14,6 +14,10 @@ namespace Study.MiniDefence
         private Vector3 currentGoal;
         private Animator animator;
 
+        // 목표지점에 도착했을때 알림을 통지할 델리게이트.
+        // 외부 클래스에서는 해당 델리게이트를 구독해서 알맞은 처리를 진행한다
+        public event Action<Enemy> GoalReached;
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
@@ -48,6 +52,7 @@ namespace Study.MiniDefence
             if (moveQueue.Count == 0)
             {
                 // 도착 처리
+                GoalReached?.Invoke(this); //내가(this) 목표지점에 도착했음을 알려준다
                 gameObject.SetActive(false);
                 return;
             }

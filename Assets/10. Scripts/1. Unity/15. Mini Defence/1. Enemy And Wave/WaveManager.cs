@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using Jay;
 using UnityEngine;
 
 namespace Study.MiniDefence
 {
-    public class WaveManager : MonoBehaviour
+    public class WaveManager : SingletonBase<WaveManager>
     {
+        public event Action<Transform, EnemyDef> EnemyReachedGoal;
+        
         private WaveDef currentWave;
         private MapData currentMap;
 
@@ -23,6 +27,7 @@ namespace Study.MiniDefence
             EnemyDef def = currentWave.Enemy;
             Enemy enemy = Instantiate(def.Prefab);
             enemy.Init(def, currentMap.GetWorldRoutePoints());
+            enemy.GoalReached += HandleGoalReached;
         }
         
         private IEnumerator WaveCoroutine()
@@ -44,9 +49,19 @@ namespace Study.MiniDefence
             Debug.Log("Wave finished");
         }
         
+        // 아래의 함수는 enemy가 도달했는지 여부를 체크하는 함수고
+        // 외부 클래스에서 Wave에서 빠져나간(Leaked) Enemy를
+        // 알수있게 하나더 빼줍니다.
         private void HandleGoalReached(Enemy enemy)
         {
+            Debug.Log($"{enemy.gameObject.name} Goal reached");
+            // 구독하고 있던 함수(HandleGoalReached)를 제거해준다.
+            enemy.GoalReached -= HandleGoalReached;
             
+            // 최종적으로 구독자에게 목적지에 도달한 Enemy가 있음을
+            // 중계 해준다. 받는 쪽은 해당정보를 가지고 게임적인 처리를 합니다
+            // 피를 감소시킨다던가, 골드 페널티를 준다던가 등등
+            EnemyReachedGoal?.Invoke(enemy.transform, currentWave.Enemy);
         }
     }
 }

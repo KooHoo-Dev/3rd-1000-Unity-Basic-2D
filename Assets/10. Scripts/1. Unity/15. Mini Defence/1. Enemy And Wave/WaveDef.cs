@@ -20,6 +20,4 @@
         public float Delay;
         public int RewardID;
     }
-    
-    
 }

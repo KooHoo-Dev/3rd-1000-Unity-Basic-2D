@@ -27,5 +27,22 @@ namespace Study.MiniDefence
                 waveManager.StartWave(waveDef, map);
             }
         }
+
+        private int PlayerHp = 30;
+
+        private void Start()
+        {
+            waveManager.EnemyReachedGoal += PlayerHpUpdate;
+        }
+
+        private void PlayerHpUpdate(Transform enemyTransform, EnemyDef enemyDef)
+        {
+            PlayerHp -= enemyDef.LeakDamage;
+            if (PlayerHp <= 0)
+            {
+                waveManager.EnemyReachedGoal -= PlayerHpUpdate;
+                Debug.Log("Game Over");
+            }
+        }
     }
 }
