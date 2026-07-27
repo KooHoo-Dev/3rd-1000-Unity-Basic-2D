@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using Study.Utilities;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Study.MiniDefence
 {
@@ -13,7 +16,16 @@ namespace Study.MiniDefence
         // 작업하기 편하도록 인스펙터 수정가능한 데이터를 맹글어 둔다
         [SerializeField] private WaveDef waveDef;
         [SerializeField] private EnemyDef enemyDef;
-        
-        
+
+        private void Update()
+        {
+            // 개발용 테스트를 위한 코드
+            if (SimpleInput.GetKeyDown(Key.Digit1))
+            {
+                // 테스트를 위해 Enemy 정보를 주입한다.
+                waveDef.Enemy = enemyDef;
+                waveManager.StartWave(waveDef, map);
+            }
+        }
     }
 }

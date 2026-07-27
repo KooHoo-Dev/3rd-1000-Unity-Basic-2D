@@ -1706,7 +1706,7 @@ GameObject:
   - component: {fileID: 4498839646774745197}
   - component: {fileID: 8103474575025580679}
   - component: {fileID: 7228402241023606237}
-  - component: {fileID: 4929779654481508673}
+  - component: {fileID: 7238818995865669194}
   m_Layer: 0
   m_Name: Enemy_00
   m_TagString: Untagged
@@ -2938,7 +2938,7 @@ MonoBehaviour:
     visible: 0
   - type: 17
     visible: 1
---- !u!114 &4929779654481508673
+--- !u!114 &7238818995865669194
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2947,7 +2947,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5733682485510070224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dece263e9b9b5e47811e50aa5aaafd2, type: 3}
+  m_Script: {fileID: 11500000, guid: 673f987ce2644694a2c7f5288ee05012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.Enemy
 --- !u!1 &5812824389047113458

@@ -19,7 +19,7 @@ namespace Study.MiniDefence
     public class EnemyDef
     {
         public int ID;
-        //public Enemy Prefab;
+        public Enemy Prefab;
         public Sprite Sprite;
         public int MaxHp;
         public float Speed;
