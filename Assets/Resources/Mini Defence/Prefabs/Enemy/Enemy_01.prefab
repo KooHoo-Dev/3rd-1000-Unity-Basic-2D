@@ -2816,8 +2816,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.0872, y: 2.0872, z: 2.0872}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 457458467724096695}
   - {fileID: 6843048178924737100}
@@ -4039,7 +4039,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7035264721408419236}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dece263e9b9b5e47811e50aa5aaafd2, type: 3}
+  m_Script: {fileID: 11500000, guid: 673f987ce2644694a2c7f5288ee05012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.Enemy
 --- !u!1 &7202391952046242859

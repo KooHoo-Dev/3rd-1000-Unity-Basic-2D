@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Study.MiniDefence;
 using UnityEngine;
 
 namespace Study.CsharpAdv.FileIO
@@ -73,6 +74,22 @@ namespace Study.CsharpAdv.FileIO
             //   안드로이드의 경우에는 apk파일 내부에 존재함. 에디터에서는 Assets/StreamingAssets/ 폴더를
             //   생성하여 사용
             Debug.Log(Application.streamingAssetsPath); 
+            
+            
+            // 4. 특별한 경로 Resources.Load : 빌드에서도 사용가능. 수정 불가능. 해당 공간은 특별해서
+            //    텍스트 경로를 통해 접근하는게 아니라 앱의 특정 구역에 접근하도록 강제되어있습니다.
+            //    Editor에 Assets/Resources 라는 폴더를 만들고 사용합니다. 빌드 용량이 늘어납니다.
+            
+            // 아래코드는 Resources/Triangle 파일을 메모리에 불러옵니다
+            GameObject triangle = Resources.Load<GameObject>("Triangle");
+            
+            // 메모리에 저장된 원본을 가지고 씬에 생성을 합니다
+            Instantiate(triangle, new Vector3(5, 4, 0), Quaternion.identity);
+            
+            //Assets/Resources/Mini Defence/Prefabs/Enemy/Enemy_00.prefab
+            //우리가 필요한 경로만 추출해서 : Mini Defence/Prefabs/Enemy/Enemy_00
+            Enemy enemy = Resources.Load<Enemy>("Mini Defence/Prefabs/Enemy/Enemy_00");
+            Instantiate(enemy, new Vector3(5, 5, 0), Quaternion.identity);
         }
         
     }

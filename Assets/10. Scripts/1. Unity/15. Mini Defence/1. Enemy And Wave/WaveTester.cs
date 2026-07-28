@@ -17,15 +17,38 @@ namespace Study.MiniDefence
         [SerializeField] private WaveDef waveDef;
         [SerializeField] private EnemyDef enemyDef;
 
+        private EnemyTable table = new EnemyTable();
+
+        private void Awake()
+        {
+            table.Load();
+        }
+
         private void Update()
         {
             // 개발용 테스트를 위한 코드
             if (SimpleInput.GetKeyDown(Key.Digit1))
             {
                 // 테스트를 위해 Enemy 정보를 주입한다.
-                waveDef.Enemy = enemyDef;
+                waveDef.Enemy = table.Get(0);
                 waveManager.StartWave(waveDef, map);
             }
+            
+            if (SimpleInput.GetKeyDown(Key.Digit2))
+            {
+                // 테스트를 위해 Enemy 정보를 주입한다.
+                waveDef.Enemy = table.Get(1);
+                waveManager.StartWave(waveDef, map);
+            }
+            
+            if (SimpleInput.GetKeyDown(Key.Digit3))
+            {
+                // 테스트를 위해 Enemy 정보를 주입한다.
+                waveDef.Enemy = table.Get(2);
+                waveManager.StartWave(waveDef, map);
+            }
+            
+            
         }
 
         private int PlayerHp = 30;
