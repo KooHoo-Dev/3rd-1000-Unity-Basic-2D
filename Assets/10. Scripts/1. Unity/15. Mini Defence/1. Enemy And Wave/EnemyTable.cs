@@ -13,6 +13,10 @@ namespace Study.MiniDefence
         private Dictionary<int, EnemyDef> defs = new();
 
         public EnemyDef Get(int id) => defs[id];
+
+        public IReadOnlyCollection<EnemyDef> GetDefs() => defs.Values;
+        
+        public int Count => defs.Count;
         
         public void Load()
         {

@@ -2,6 +2,7 @@
 using Study.Utilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 namespace Study.MiniDefence
 {
@@ -17,11 +18,19 @@ namespace Study.MiniDefence
         [SerializeField] private WaveDef waveDef;
         [SerializeField] private EnemyDef enemyDef;
 
-        private EnemyTable table = new EnemyTable();
-
+        private EnemyTable enemyTable = new EnemyTable();
+        private WaveTable waveTable = new WaveTable();
+        
         private void Awake()
         {
-            table.Load();
+            enemyTable.Load();
+            waveTable.Load(enemyTable);
+        }
+
+        private void StartWave(int waveID)
+        {
+            WaveDef def = waveTable.Get(waveID);
+            waveManager.StartWave(def, map);
         }
 
         private void Update()
@@ -29,26 +38,9 @@ namespace Study.MiniDefence
             // 개발용 테스트를 위한 코드
             if (SimpleInput.GetKeyDown(Key.Digit1))
             {
-                // 테스트를 위해 Enemy 정보를 주입한다.
-                waveDef.Enemy = table.Get(0);
-                waveManager.StartWave(waveDef, map);
+                int randNum = Random.Range(1, waveTable.Count+1);
+                StartWave(randNum);
             }
-            
-            if (SimpleInput.GetKeyDown(Key.Digit2))
-            {
-                // 테스트를 위해 Enemy 정보를 주입한다.
-                waveDef.Enemy = table.Get(1);
-                waveManager.StartWave(waveDef, map);
-            }
-            
-            if (SimpleInput.GetKeyDown(Key.Digit3))
-            {
-                // 테스트를 위해 Enemy 정보를 주입한다.
-                waveDef.Enemy = table.Get(2);
-                waveManager.StartWave(waveDef, map);
-            }
-            
-            
         }
 
         private int PlayerHp = 30;
