@@ -47,8 +47,8 @@ namespace Study.MiniDefence
     {
         public int ID;
         public string Name;
-        public Unit PrefabKey;
-        public Sprite SpriteKey;
+        public Unit Prefab;
+        public Sprite Sprite;
         public UnitKind Kind;
         public TargetingKind Targeting;
         
