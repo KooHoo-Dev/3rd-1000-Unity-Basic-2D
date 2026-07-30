@@ -36,6 +36,7 @@ namespace Study.MiniDefence
             Unit unit = Instantiate(def.Prefab, unitRoot);
             unit.transform.position = BoardMap.instance.CellToWorld(coord);
             BoardMap.instance.SetUnit(coord, unit);
+            unit.Init(def, coord);
             return unit;
         }
 
