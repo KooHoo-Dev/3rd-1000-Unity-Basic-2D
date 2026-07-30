@@ -33,7 +33,7 @@ flowchart LR
 ## 2. 전체 흐름 한 장
 
 ```mermaid
-flowchart TD
+flowchart LR
     TSV["enemies.tsv<br/><i>표 파일</i>"]
     DTO["EnemyDTO<br/><i>표의 거울</i>"]
     DEF["EnemyDef<br/><i>런타임 정의</i>"]
@@ -50,14 +50,13 @@ flowchart TD
 
 단계마다 담당이 하나씩 있다.
 
-| 단계 | 담당 | 하는 일 |
-|---|---|---|
-| ① 읽기 | `TSVReader` (JayCore) | 파일의 글자를 C# 객체로 |
-| ② 표의 거울 | `EnemyDTO` | 표 한 행을 그대로 담는 그릇 |
-| ③ 해석 | `EnemyTable` | 문자열 키를 실제 에셋으로 바꾸고, 다른 표와 잇는다 |
-| ④ 런타임 정의 | `EnemyDef` | 게임이 바로 쓸 수 있는 완성된 형태 |
-| ⑤ 보관·조회 | `EnemyTable` | ID로 찾아 쓸 수 있게 딕셔너리에 넣어 둔다 |
-| ⑥ 창구 | `DataManager` | 표들로 들어가는 입구 하나를 제공하고, 로딩 순서를 정한다 |
+| 단계         | 담당 | 하는 일 |
+|------------|---|---|
+| ① 읽기       | `TSVReader` (JayCore) | 파일의 글자를 C# 객체로 |
+| ② 표의 거울    | `EnemyDTO` | 표 한 행을 그대로 담는 그릇 |
+| ③ 런타임 정의, 해석 | `EnemyDef` | 게임이 바로 쓸 수 있는 완성된 형태 |
+| ④ ⑤ 보관·조회    | `EnemyTable` | ID로 찾아 쓸 수 있게 딕셔너리에 넣어 둔다 |
+| ⑥ 창구       | `DataManager` | 표들로 들어가는 입구 하나를 제공하고, 로딩 순서를 정한다 |
 
 ---
 

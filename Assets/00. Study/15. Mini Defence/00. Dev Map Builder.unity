@@ -178,7 +178,7 @@ MonoBehaviour:
   goalTile: {x: 9, y: 4}
   enablePainting: 1
   paintKind: 1
-  paintCamera: {fileID: 325173385}
+  paintCamera: {fileID: 0}
   prefabPath: Assets/10. Scripts/1. Unity/15. Mini Defence/GeneratedMap.prefab
 --- !u!1 &325173383
 GameObject:

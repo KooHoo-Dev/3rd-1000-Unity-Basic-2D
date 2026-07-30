@@ -57,6 +57,19 @@ namespace Study.MiniDefence
 
         #endregion
 
-        
+        public void ShowPreview(UnitDef def, Vector2Int targetCoord)
+        {
+            
+        }
+
+        public void ClearPreview()
+        {
+            
+        }
+
+        public int GetRefund(Unit unit)
+        {
+            return 0;
+        }
     }
 }
