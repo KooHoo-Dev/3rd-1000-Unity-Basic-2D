@@ -10,7 +10,7 @@ namespace Study.MiniDefence
 
         public bool CanAfford(int selectedDefCost)
         {
-            return false;
+            return true;
         }
     }
 }
