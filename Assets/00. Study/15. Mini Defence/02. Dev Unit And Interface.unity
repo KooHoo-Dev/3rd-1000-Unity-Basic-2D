@@ -346,6 +346,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.PlacementSystem
   unitRoot: {fileID: 368734459}
   previewAlpha: 0.7
+--- !u!114 &398847051 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8917226401048114946, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
+  m_PrefabInstance: {fileID: 568387451}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &441203521
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,7 +517,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3043194422989408141, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -516,6 +528,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1162597390366195248, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 568387458}
+    - targetCorrespondingSourceObject: {fileID: 6949408301759135195, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1314283681}
   m_SourcePrefab: {fileID: 100100000, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
 --- !u!1 &568387452 stripped
 GameObject:
@@ -550,6 +565,50 @@ MonoBehaviour:
   buildMenu: {fileID: 527547859}
   manageMenu: {fileID: 2064504871}
   rangeIndicator: {fileID: 1877739635}
+--- !u!1 &934837034
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 934837036}
+  - component: {fileID: 934837035}
+  m_Layer: 0
+  m_Name: EconomyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &934837035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934837034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2d6800d23d34d52b92e0848e28d5c7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.EconomyManager
+--- !u!4 &934837036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934837034}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 941.855, y: -0, z: 5250.015}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1003007848 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8010035904693892706, guid: 8a3d655e639999841899e9937acd9151, type: 3}
@@ -561,6 +620,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a26378cc01495eba54f0140b15af64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.MapData
+--- !u!1 &1314283679 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6949408301759135195, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
+  m_PrefabInstance: {fileID: 568387451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1314283681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314283679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d978284ca25846c8b8c3499affccaadf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.HUD
+  mineralText: {fileID: 398847051}
 --- !u!1 &1463231201
 GameObject:
   m_ObjectHideFlags: 0
@@ -818,5 +895,6 @@ SceneRoots:
   - {fileID: 441203522}
   - {fileID: 368734459}
   - {fileID: 568387451}
-  - {fileID: 17536450}
   - {fileID: 2357705686878124706}
+  - {fileID: 17536450}
+  - {fileID: 934837036}

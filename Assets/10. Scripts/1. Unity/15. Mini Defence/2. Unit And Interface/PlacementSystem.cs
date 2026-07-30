@@ -32,7 +32,16 @@ namespace Study.MiniDefence
             // 캐싱해서 쓰세요
             if (BoardMap.instance.IsBuildable(coord) == false) 
                 return null;
+            
             // 돈처리하는거 넣고, 돈없으면 return 때리기
+            int cost = def.Cost;
+            if (EconomyManager.instance.TrySpend(cost) == false)
+            {
+                Debug.Log($"[PlacementSystem] 광물이 부족합니다." +
+                          $"필요 : {cost}, 보유 : {EconomyManager.Instance.Minerals}");
+                return null;
+            }
+            
             Unit unit = Instantiate(def.Prefab, unitRoot);
             unit.transform.position = BoardMap.instance.CellToWorld(coord);
             BoardMap.instance.SetUnit(coord, unit);
@@ -109,13 +118,11 @@ namespace Study.MiniDefence
             previewUnit = null;
         }
 
-        public int GetRefund(Unit unit)
-        {
-            return 0;
-        }
-
         #endregion
         
-        
+        // 판매시 돌려줄 금액.
+        public int GetRefund(Unit unit)
+            => Mathf.RoundToInt(unit.Def.Cost * GameSettings.Instance.RefundRate);
+
     }
 }
