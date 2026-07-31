@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Study.MiniDefence._3._Combat;
 using UnityEngine;
 
 namespace Study.MiniDefence
@@ -18,7 +19,7 @@ namespace Study.MiniDefence
         private Animator animator;
 
         private float cooldown;                          // 다음 공격까지 남은 시간
-        private readonly List<Enemy> inRange = new();    // 사거리 안 적들을 담아 두는 통
+        private List<Enemy> inRange = new();    // 사거리 안 적들을 담아 두는 통
 
         // 주변 보너스
         private float bonusAtkPercent;
@@ -73,12 +74,24 @@ namespace Study.MiniDefence
         // 사거리 안에서 조준 기준에 맞는 적 하나를 고른다.
         private Enemy AcquireTarget()
         {
-            return null;
+            // inRange에 조건을 만족하는 Enemy 객체가 채워져서 나온다
+            EnemyRegistry.FindInRange(transform.position, Def.Range, ref inRange);
+            if(inRange.Count == 0)return null;
+            return inRange[0]; // 일단은 요걸로
         }
 
         private void Attack(Enemy target)
         {
+            // 크리티컬 판정은 한발에 한번만
+            // Random.value ?
+            // : 0~1 까지의 float중 하나를 반환합니다. 0~100 까지 사용했지만, 이제부터는
+            //  섞어서 쓰겠습니다.
+            bool isCritical = Random.value < Def.CritChance;
+            int damage = isCritical
+                ? Mathf.RoundToInt(Def.Damage * GameSettings.Instance.CriMultiplier)
+                : Def.Damage;
             
+            target.TakeDamage(damage, isCritical);
         }
 
         #endregion

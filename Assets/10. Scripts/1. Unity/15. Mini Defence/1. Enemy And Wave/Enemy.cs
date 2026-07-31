@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using DG.Tweening;
+using Study.MiniDefence._3._Combat;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -32,8 +33,14 @@ namespace Study.MiniDefence
             MoveNext();
         }
 
+        private void OnEnable()
+        {
+            EnemyRegistry.Register(this);
+        }
+
         private void OnDisable()
         {
+            EnemyRegistry.Unregister(this);
             // Enemy가 만약에 체력이 닳아서 죽게된다면 진행중인 Tween을 없애준다
             // (자동으로 되는지 모르겠음. 아마 안될껄?)
             transform.DOKill();
@@ -53,6 +60,8 @@ namespace Study.MiniDefence
             totalPointCount = waypoints.Count;
             passedPointCount = 0;
             segmentStart = transform.position;
+
+            CurrentHp = refDef.MaxHp;
         }
 
         private void MoveNext()
@@ -72,6 +81,7 @@ namespace Study.MiniDefence
                 .SetEase(Ease.Linear)
                 .OnComplete(OnSegmentComplete);
             animator.SetBool(IsMove, true);
+            
         }
         
         // ------ 아래는 다른 객체와의 상호작용 및 구체적 구현 부분 -----
