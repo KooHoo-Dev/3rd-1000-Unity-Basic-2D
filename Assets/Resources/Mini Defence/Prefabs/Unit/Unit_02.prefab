@@ -2636,6 +2636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec94eaa3f36f4225a840c42e00e67114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.Unit
+  attackWindUp: 0.2
 --- !u!1 &3599071803895390514
 GameObject:
   m_ObjectHideFlags: 0

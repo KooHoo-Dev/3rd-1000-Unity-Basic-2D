@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Study.MiniDefence._3._Combat;
 using UnityEngine;
@@ -25,6 +26,14 @@ namespace Study.MiniDefence
         private float bonusAtkPercent;
         private float bonusSpeedPercent;
 
+        // Launcher
+        public ProjectileLauncher Launcher { get; private set; }
+
+        private IAttackPattern attackPattern = new SingleAttack();
+        private ITargetingStrategy targetingStrategy;
+
+        [SerializeField] private float attackWindUp;
+        
         #region 스탯 (기본값 + 강화)
 
         public int Damage => Mathf.RoundToInt(Def.Damage * (1f + bonusAtkPercent));
@@ -39,6 +48,7 @@ namespace Study.MiniDefence
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            Launcher = GetComponent<ProjectileLauncher>(); //없을 수도 있다(Unit_02)
         }
 
         // 생성 직후 배치 시스템이 불러주는 초기화.
@@ -47,30 +57,45 @@ namespace Study.MiniDefence
             Def = def;
             Coord = coord;
 
+            attackPattern = AttackPatternFactory.Create(def.Kind);
+            
             // 하이어라키에서 어떤 유닛이 어디에 있는지 바로 보이도록.
             gameObject.name = $"Unit_{def.Name}_{coord.x}_{coord.y}";
+
+            StartCoroutine(AttackRoutine());
         }
 
         private void Update()
         {
             RefreshBuff();
-
-            Enemy target = AcquireTarget();
-
-            // 사거리 안에 적이 있으면 공격 자세(Attack), 없으면 대기(Idle).
-            animator.SetBool(IS_ATTACK, target != null);
-
-            // 쿨다운이 끝나야 다음 발을 쏜다.
-            cooldown -= Time.deltaTime;
-            if (cooldown > 0f) return;
-            if (target == null) return;   // 사거리에 아무도 없으면 그냥 기다린다
-
-            Attack(target);
-            cooldown = AttackInterval;
         }
 
         #region 공격
 
+        private IEnumerator AttackRoutine()
+        {
+            while (gameObject.activeInHierarchy)
+            {
+                Enemy target = AcquireTarget();
+                
+                if (target == null)
+                {
+                    yield return null; // 사거리에 아무도 없으면 다음프레임으로 넘긴다
+                    continue;
+                }
+               
+                // 사거리 안에 적이 있으면 공격 자세(Attack), 없으면 대기(Idle).
+                animator.SetBool(IS_ATTACK, true);
+                // 선 딜레이
+                yield return new WaitForSeconds(attackWindUp);
+                Attack(target);
+                animator.SetBool(IS_ATTACK, false);
+                // 후 딜레이 (전체 딜레이 - 선딜레이)
+                yield return new WaitForSeconds(AttackInterval - attackWindUp);
+                // 쿨다운이 끝나야 다음 공격을 진행한다
+            }
+        }
+        
         // 사거리 안에서 조준 기준에 맞는 적 하나를 고른다.
         private Enemy AcquireTarget()
         {
@@ -91,7 +116,7 @@ namespace Study.MiniDefence
                 ? Mathf.RoundToInt(Def.Damage * GameSettings.Instance.CriMultiplier)
                 : Def.Damage;
             
-            target.TakeDamage(damage, isCritical);
+            attackPattern.Fire(this,target,damage, isCritical);
         }
 
         #endregion
