@@ -18,7 +18,8 @@ namespace Study.MiniDefence
 
         private void OnDestroy()
         {
-            EconomyManager.Instance.MineralsChanged -= RefreshMinerals;
+            if(EconomyManager.Instance != null)
+                EconomyManager.Instance.MineralsChanged -= RefreshMinerals;
         }
 
         // amount = 잔액

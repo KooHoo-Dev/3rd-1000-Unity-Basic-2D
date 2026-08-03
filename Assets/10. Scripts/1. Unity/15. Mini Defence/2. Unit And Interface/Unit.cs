@@ -12,6 +12,9 @@ namespace Study.MiniDefence
     //   → 표(units.tsv)만 고치면 게임 안의 모든 유닛이 함께 바뀐다.
     public class Unit : MonoBehaviour
     {
+        public Transform TargetPointer;
+        public Vector3 TargetPointerOffset;
+        
         private static readonly int IS_ATTACK = Animator.StringToHash("IsAttack");
 
         public UnitDef Def { get; private set; }
@@ -29,7 +32,7 @@ namespace Study.MiniDefence
         // Launcher
         public ProjectileLauncher Launcher { get; private set; }
 
-        private IAttackPattern attackPattern = new SingleAttack();
+        private IAttackPattern attackPattern;
         private ITargetingStrategy targetingStrategy;
 
         [SerializeField] private float attackWindUp;
@@ -58,6 +61,7 @@ namespace Study.MiniDefence
             Coord = coord;
 
             attackPattern = AttackPatternFactory.Create(def.Kind);
+            targetingStrategy = TargetingFactory.Create(def.Targeting);
             
             // 하이어라키에서 어떤 유닛이 어디에 있는지 바로 보이도록.
             gameObject.name = $"Unit_{def.Name}_{coord.x}_{coord.y}";
@@ -102,7 +106,12 @@ namespace Study.MiniDefence
             // inRange에 조건을 만족하는 Enemy 객체가 채워져서 나온다
             EnemyRegistry.FindInRange(transform.position, Def.Range, ref inRange);
             if(inRange.Count == 0)return null;
-            return inRange[0]; // 일단은 요걸로
+
+            Enemy target = targetingStrategy.Pick(inRange, transform.position);
+            if (TargetPointer == null) return target;
+            TargetPointer.SetParent(target.transform);
+            TargetPointer.position = target.transform.position + TargetPointerOffset;
+            return target;
         }
 
         private void Attack(Enemy target)
