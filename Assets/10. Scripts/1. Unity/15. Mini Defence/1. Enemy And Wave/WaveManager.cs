@@ -14,8 +14,8 @@ namespace Study.MiniDefence
         public event Action<Transform, EnemyDef> EnemyReachedGoal;
         public event Action<WaveDef> WaveCleared;
         public event Action<int> WaveChanged;
-        
-        public int CurrentWaveNo => currentWave?.ID ?? 0;
+
+        public int CurrentWaveNo { get; private set; } = 0;
         public bool IsWaveActive { get; private set; }
         
         // 스폰 자체는 끝났는지 체크하는 플래그
@@ -110,6 +110,12 @@ namespace Study.MiniDefence
             // 중계 해준다. 받는 쪽은 해당정보를 가지고 게임적인 처리를 합니다
             // 피를 감소시킨다던가, 골드 페널티를 준다던가 등등
             EnemyReachedGoal?.Invoke(enemy.transform, currentWave.Enemy);
+        }
+
+        public void Restore(int waveNo)
+        {
+            CurrentWaveNo = waveNo;
+            WaveChanged?.Invoke(CurrentWaveNo);
         }
     }
 }

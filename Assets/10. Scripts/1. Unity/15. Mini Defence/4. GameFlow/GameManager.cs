@@ -120,5 +120,7 @@ namespace Study.MiniDefence
             LivesChanged?.Invoke(Lives);
             if(Lives <= 0) machine.ChangeState<DefeatState>();
         }
+        
+        
     }
 }

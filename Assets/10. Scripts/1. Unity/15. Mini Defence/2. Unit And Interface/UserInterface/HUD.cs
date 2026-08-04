@@ -31,6 +31,9 @@ namespace Study.MiniDefence
             GameManager.Instance.LivesChanged += RefreshLives;
             // RefreshWave 함수를 WaveManager에 연결 시켜준다
             WaveManager.Instance.WaveChanged += RefreshWave;
+            
+            saveButton.onClick.AddListener(SaveService.Save);
+            loadButton.onClick.AddListener(SaveService.Load);
         }
 
         private void Update()
