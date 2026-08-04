@@ -73,7 +73,8 @@ namespace Study.MiniDefence
         public void OnClickNextWave()
         {
             // 테스트 용도로 맹글었음. 바꿔줘야함
-            var wave = DataManager.Instance.GetWaveDef(1);
+            int nextWaveID = WaveManager.Instance.CurrentWaveNo + 1;
+            var wave = DataManager.Instance.GetWaveDef(nextWaveID);
             var map = BoardMap.Instance.Map;
             WaveManager.Instance.StartWave(wave, map);
         }

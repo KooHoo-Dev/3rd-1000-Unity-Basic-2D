@@ -346,17 +346,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.PlacementSystem
   unitRoot: {fileID: 368734459}
   previewAlpha: 0.7
---- !u!114 &398847051 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8917226401048114946, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
-  m_PrefabInstance: {fileID: 568387451}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &441203521
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,17 +391,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.BoardMap
   mapData: {fileID: 1003007848}
---- !u!114 &527547859 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3219437194612028366, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
-  m_PrefabInstance: {fileID: 568387451}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3062841e2867e414abf886b14609994c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.BuildMenu
 --- !u!1001 &568387451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -425,10 +403,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MiniDefence UI
       objectReference: {fileID: 0}
-    - target: {fileID: 2861206389224778098, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 1711949334669794225, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
+      propertyPath: rangeIndicator
+      value: 
+      objectReference: {fileID: 1877739635}
     - target: {fileID: 6478138415141006024, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 152
@@ -541,58 +519,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9043005034415108818, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3043194422989408141, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
+    - target: {fileID: 8849898306998619567, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
+      propertyPath: worldCamera
+      value: 
+      objectReference: {fileID: 325173385}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1162597390366195248, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 568387453}
-    - targetCorrespondingSourceObject: {fileID: 1162597390366195248, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 568387458}
-    - targetCorrespondingSourceObject: {fileID: 6949408301759135195, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1314283681}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
---- !u!1 &568387452 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1162597390366195248, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
-  m_PrefabInstance: {fileID: 568387451}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &568387453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 568387452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21ad1c4a98bff45499f2187bfdee0e43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.InputHandler
-  worldCamera: {fileID: 325173385}
---- !u!114 &568387458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 568387452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2205e44df34f1a4084b3b67488c50f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.UIManager
-  buildMenu: {fileID: 527547859}
-  manageMenu: {fileID: 2064504871}
-  rangeIndicator: {fileID: 1877739635}
 --- !u!1 &934837034
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,24 +627,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b920daa19491498e9abc2d2bd40aebf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.GameManager
---- !u!1 &1314283679 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6949408301759135195, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
+--- !u!114 &1314283681 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 967049335675393160, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
   m_PrefabInstance: {fileID: 568387451}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1314283681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1314283679}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d978284ca25846c8b8c3499affccaadf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.HUD
-  mineralText: {fileID: 398847051}
 --- !u!1 &1463231201
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,17 +803,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 974e747aacb76d24298df854cf19f164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.RangeIndicator
---- !u!114 &2064504871 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8065427426807971194, guid: 95d3d76733d2f9847854df29fd3d3f3c, type: 3}
-  m_PrefabInstance: {fileID: 568387451}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ef6ae6e495d1e48b47c55db61f0cf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Study.MiniDefence.ManageMenu
 --- !u!1001 &2357705686878124706
 PrefabInstance:
   m_ObjectHideFlags: 0
