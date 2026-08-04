@@ -46,6 +46,8 @@ namespace Study.MiniDefence
             {
                 readyState,
                 new InWaveState(),
+                new VictoryState(),
+                new DefeatState()
             });
 
             // 머신의 상태 변환 이벤트를 연결 해준다
@@ -90,14 +92,20 @@ namespace Study.MiniDefence
 
         private void HandleWaveCleared(WaveDef waveDef)
         {
-            machine.ChangeState<ReadyState>();
+            int hasNextWave = WaveManager.Instance.CurrentWaveNo;
+            
+            // 승리 판정
+            if (DataManager.Instance.Waves.Count <= hasNextWave)
+                machine.ChangeState<VictoryState>();
+            else
+                machine.ChangeState<ReadyState>();
+            
             //PS : 남은 웨이브에 다라 승리/준비 단계로 전환하는 내용이 들어가면 될것 같습니다
         }
 
         private void HandleEnemyLeaked(Transform lastPosition, EnemyDef enemyDef)
         {
             LoseLives(enemyDef.LeakDamage);
-            Debug.Log($"[GameManager] HandleEnemyLeaked");
         }
 
         public void GainLives(int lives)
@@ -110,6 +118,7 @@ namespace Study.MiniDefence
         {
             Lives -= amount;
             LivesChanged?.Invoke(Lives);
+            if(Lives <= 0) machine.ChangeState<DefeatState>();
         }
     }
 }
