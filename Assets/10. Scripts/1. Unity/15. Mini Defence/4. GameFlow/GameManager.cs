@@ -1,6 +1,7 @@
 ﻿using System;
 using Jay;
 using Jay.FSM;
+using UnityEngine;
 
 namespace Study.MiniDefence
 {
@@ -38,22 +39,77 @@ namespace Study.MiniDefence
 
         protected override void OnInitialize()
         {
-            base.OnInitialize();
+            Lives = GameSettings.Instance.StartingLives;
+            
+            // 머신에 상태를 넣어준다
+            machine.AddRange(new IGameFlowState[]
+            {
+                readyState,
+                new InWaveState(),
+            });
+
+            // 머신의 상태 변환 이벤트를 연결 해준다
+            machine.OnStateChanged += InvokeStatChanged;
+
+            void InvokeStatChanged(IGameFlowState prev, IGameFlowState next)
+            {
+                Debug.Log($"[StateMachine] {prev?.Id} -> {next.Id}");
+                StateChanged?.Invoke(next);
+            }
+            
+            // 머신의 상태를 ReadyState로 바꿔준다
+            machine.ChangeState<ReadyState>();
         }
 
         private void Update()
         {
-            throw new NotImplementedException();
+            // 유니티엔진의 업데이트 주기에 맞춰서
+            // 머신의 Tick을 호출해줍니다
+            machine.Tick(Time.deltaTime);
         }
 
         private void OnEnable()
         {
-            throw new NotImplementedException();
+            WaveManager.Instance.WaveChanged += HandleWaveChanged;
+            WaveManager.Instance.WaveCleared += HandleWaveCleared;
+            WaveManager.Instance.EnemyReachedGoal += HandleEnemyLeaked;
         }
 
         private void OnDisable()
         {
-            throw new NotImplementedException();
+            if (WaveManager.IsInitialized == false) return;
+            WaveManager.Instance.WaveChanged -= HandleWaveChanged;
+            WaveManager.Instance.WaveCleared -= HandleWaveCleared;
+            WaveManager.Instance.EnemyReachedGoal -= HandleEnemyLeaked;
+        }
+
+        private void HandleWaveChanged(int waveNo)
+        {
+            machine.ChangeState<InWaveState>();
+        }
+
+        private void HandleWaveCleared(WaveDef waveDef)
+        {
+            machine.ChangeState<ReadyState>();
+            //PS : 남은 웨이브에 다라 승리/준비 단계로 전환하는 내용이 들어가면 될것 같습니다
+        }
+
+        private void HandleEnemyLeaked(Transform lastPosition, EnemyDef enemyDef)
+        {
+            LoseLives(enemyDef.LeakDamage);
+            Debug.Log($"[GameManager] HandleEnemyLeaked");
+        }
+
+        public void GainLives(int lives)
+        {
+            Lives = lives;
+            LivesChanged?.Invoke(Lives);
+        }
+
+        public void LoseLives(int amount)
+        {
+            Lives -= amount;
+            LivesChanged?.Invoke(Lives);
         }
     }
 }
