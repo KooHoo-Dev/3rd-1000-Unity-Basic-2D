@@ -151,7 +151,7 @@ namespace Study.MiniDefence
         // 1. 버프를 주는쪽이 처리하는 케이스
         // 2. 받는 쪽이 처리하는 케이스
         // 2번 항목을 구현해볼겁니다.
-        
+
         private void RefreshBuff()
         {
             // UnitStats 클래스의 SetBuff를 올바른 매개변수(테이블 수치)를

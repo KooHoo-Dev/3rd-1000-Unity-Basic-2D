@@ -1,4 +1,6 @@
-﻿namespace Study.MiniDefence
+﻿using Jay.FSM;
+
+namespace Study.MiniDefence
 {
     public enum GameStateId
     {
@@ -8,7 +10,7 @@
         Defeat,
     }
     
-    public class IGameFlowState
+    public interface IGameFlowState : IState
     {
         GameStateId Id { get; }
 

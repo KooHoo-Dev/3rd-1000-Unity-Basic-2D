@@ -1,4 +1,6 @@
-﻿using Jay;
+﻿using System;
+using Jay;
+using Jay.FSM;
 
 namespace Study.MiniDefence
 {
@@ -12,6 +14,46 @@ namespace Study.MiniDefence
     
     public class GameManager : SingletonBase<GameManager>
     {
+        # region 상태 관련 필드
         
+        private StateMachine<IGameFlowState> machine = new();
+
+        // 준비상태는 남은 준비 시간을 물어봐야하 하므로 따로 들고 있는다.
+        private ReadyState readyState = new();
+
+        public IGameFlowState State => machine.CurrentState;
+        public GameStateId StateId => machine.CurrentState.Id;
+
+        // 남은 준비 시간을 반환합니다. Ready상태가 아니라면 무조건 0을 반환합니다.
+        public float PrepRemaining
+            => machine.IsCurrent<ReadyState>() ? readyState.Remaining : 0f;
+        
+        public event Action<IGameFlowState> StateChanged;
+        
+        # endregion
+        
+        // 목숨
+        public int Lives { get; private set; }
+        public event Action<int> LivesChanged;
+
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
+        }
+
+        private void Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnEnable()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnDisable()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
