@@ -722,9 +722,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1139043414}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e87d381ef9c36b46a474f61dfad3d69, type: 3}
+  m_Script: {fileID: 11500000, guid: 446a60c8d505486da98b903b7d1a9460, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObservableDemo
+  m_EditorClassIdentifier: Assembly-CSharp::Study.MiniFarm.Study_BlendTree
 --- !u!1 &1287178608
 GameObject:
   m_ObjectHideFlags: 0
