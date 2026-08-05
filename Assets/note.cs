@@ -1,40 +1,29 @@
+
+
+
 using System;
-using System.Collections.Generic;
-using DG.Tweening;
-using Study_OOP_And_Design_Pattern.Structural.Decorator;
-using Study.MiniDefence;
 using Study.Utilities;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using Jay;
 
-public class RailFollower : MonoBehaviour
+public class Note : MonoBehaviour
 {
-    public MapData data;
-    private List<Vector3> routePoints = new List<Vector3>();
-    private int currentIndex = 0;
+    private Animator anim;
 
-    public float speed;
-    
     private void Start()
     {
-        routePoints = data.GetWorldRoutePoints();
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (transform.IsSamePosition(routePoints[currentIndex], 0.1f))
-        {
-            currentIndex++;
-            if(currentIndex >= routePoints.Count) currentIndex = 0; 
-        }
+        var input = SimpleInput.GetMoveAxisRaw();
+        anim.SetFloat("DirX", input.x);
+        anim.SetFloat("DirY", input.y);
 
-        if (SimpleInput.GetKeyDown(Key.Space))
+        if (input.x < 0)
         {
-            transform.DOMove(routePoints[currentIndex], 0.5f);
+            transform.localScale = new Vector3(-1, 1, 1);
         }
         
     }
-    
-    
 }
