@@ -22,13 +22,10 @@ namespace Study.MiniFarm
         [SerializeField] private MapData mapData;
         [SerializeField] private MapLoader mapLoader;
         
+        public Transform goalMarker;
+        public Transform startMarker;
         
         public FarmGrid Grid { get; private set; }
-
-        private void Awake()
-        {
-            
-        }
 
         private async void Start()
         {
@@ -38,9 +35,6 @@ namespace Study.MiniFarm
             Debug.Log($"[PathFinder] 준비 완료. {Grid.Width}, {Grid.Height}");
         }
 
-        public Transform startMarker;
-        public Transform goalMarker;
-        
         private void Update()
         {
             if (SimpleInput.GetKeyDown(Key.Space))
@@ -52,6 +46,13 @@ namespace Study.MiniFarm
             }
         }
 
+        # region Public Method
+        
+        public Vector2Int WorldToCoord(Vector3 world) => Grid.WorldToCell(world);
+        public Vector3 CoordToWorld(Vector2Int coord) => Grid.CellToWorld(coord);
+        public List<Vector3> FindWaypointsOrNull(Vector3  start, Vector3 goal)
+            =>  FindWaypointsOrNull(WorldToCoord(start), WorldToCoord(goal));
+        
         public List<Vector3> FindWaypointsOrNull(Vector2Int startCoord, Vector2Int goalCoord)
         {
             Tile start = Grid.GetTileOrNull(startCoord);
@@ -81,6 +82,8 @@ namespace Study.MiniFarm
             
             return ToWaypoints(start, path);
         }
+        
+        #endregion
         
         # region 경로 찾기 함수들
         
@@ -223,7 +226,6 @@ namespace Study.MiniFarm
         private bool hasLastPath;
         public bool drawVisited = true;
         public bool drawPath = true;
-        
 
         private List<Vector3> ToWaypoints(Tile start, List<Tile> path)
         {
