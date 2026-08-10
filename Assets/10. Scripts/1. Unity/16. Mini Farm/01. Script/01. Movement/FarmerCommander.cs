@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Study.Utilities;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Study.MiniFarm
 {
@@ -44,6 +46,7 @@ namespace Study.MiniFarm
             Transform body = farmer.transform;
             // 정면처리를 먼저 합니다.
             farmer.Face(goal - body.position);
+            farmer.SetWalking(true);
 
             tween = body.DOMove(goal, 1 / speed)
                 .SetEase(Ease.Linear);
@@ -92,12 +95,19 @@ namespace Study.MiniFarm
         
         public IEnumerator Execute(FarmerController farmer)
         {
-            throw new System.NotImplementedException();
+            // 걷는 애니메이션을 멈추게하고
+            farmer.SetWalking(false);
+            farmer.Play(action);
+
+            // 아래 코드는 변경 예정
+            yield return new WaitForSeconds(windUp);
+            onHit?.Invoke();
+            yield return new WaitForSeconds(duration - windUp);
         }
 
         public void Cancel()
         {
-            throw new System.NotImplementedException();
+            // 간단한 애니메이션 재생이라 무를 수도 없고 할게 없음.
         }
     }
 
@@ -140,5 +150,108 @@ namespace Study.MiniFarm
         // Tip !
         // : 돌리는 녀석이 참조타입(힙 객체)이어서 사실 코루틴 하나 돌리고,
         //  하나 종료하면 가비지(Garbage)가 발생합니다.
+
+        private void Awake()
+        {
+            farmerController = GetComponent<FarmerController>();
+            if(viewCamera == null) viewCamera = Camera.main;
+        }
+
+        private void Update()
+        {
+            if (pathFinder == null || pathFinder.IsReady == false) return;
+
+            if (SimpleInput.GetMouseButtonDown(SimpleInput.MouseButton.Right))
+            {
+                Vector2 mousePos = SimpleInput.GetMousePosition();
+                Vector3 world = viewCamera.ScreenToWorldPoint(mousePos);
+                world.z = 0.0f;
+                MoveTo(world);
+            }
+        }
+
+        private void OnDisable()
+        {
+            CancelAll();
+        }
+
+        # region Public Methods
+        
+        // 지정한 월드 지점까지 걸어간다.
+        // PathFinder를 이용해서 웨이포인트를 가져오고 해당 포인트를 이용해서
+        // MoveStepCommand를 동적으로 생성한다.
+        public bool MoveTo(Vector3 goal)
+        {
+            // 웨이포인트를 가져온다 (내 위치, 목적지)
+            List<Vector3> waypoints = 
+                pathFinder.FindWaypointsOrNull(transform.position, goal);
+
+            if (waypoints == null || waypoints.Count == 0) return false;
+
+            // 웨이포인트를 가지고 MoveStepCommand를 생성한다
+            for (int i = 0; i < waypoints.Count; i++)
+            {
+                queue.Add(new MoveStepCommand(waypoints[i], moveSpeed));
+            }
+            
+            StartRunning();
+            
+            return true;
+        }
+
+        public void CancelAll()
+        {
+            queue.Clear();
+            
+            // 동작하는 RunQueue() 코루틴이 있다면
+            if(running != null)
+            {
+                StopCoroutine(running); // 멈추고
+                running = null;         // 비워준다
+            }
+            
+            currentCommand?.Cancel();
+            currentCommand = null;
+            
+            farmerController.SetWalking(false);
+        }
+
+        // 걷기 애니메이션 빼고 다른 애니메이션 집어 넣을때 사용함.
+        public void Enqueue(IFarmerCommand command)
+        {
+            queue.Add(command);
+            StartRunning();
+        }
+        
+        # endregion
+
+        #region Private Methods
+
+        private void StartRunning()
+        {
+            // 동작중인 RunQueue() 코루틴이 있다면 Pass
+            if (running == null) running = StartCoroutine(RunQueue());
+        }
+
+        // queue가 빌때까지 앞에서부터 하나씩 꺼내서 실행한다.
+        // 명령마다 코루틴을 따로 돌리지 않고, 여기서 한 줄기로 이어 붙인다
+        private IEnumerator RunQueue()
+        {
+            while (queue.Count > 0)
+            {
+                // 변수명이 queue지 실제로는 List임에 유의
+                currentCommand = queue[0];
+                queue.RemoveAt(0);
+                
+                // StartCoroutine을 실행하는게 아님
+                yield return currentCommand.Execute(farmerController);
+                currentCommand = null;
+            }
+            
+            farmerController.SetWalking(false);
+            running = null;
+        }
+
+        #endregion
     }
 }

@@ -27,12 +27,15 @@ namespace Study.MiniFarm
         
         public FarmGrid Grid { get; private set; }
 
+        public bool IsReady { get; private set; } = false;
+        
         private async void Start()
         {
             await DataManager.Instance.EnsureLoadedAsync();
             mapData = mapLoader.LoadOrNull();
             Grid = mapData.ToGrid(DataManager.Instance.Tiles);
             Debug.Log($"[PathFinder] 준비 완료. {Grid.Width}, {Grid.Height}");
+            IsReady = true;
         }
 
         private void Update()

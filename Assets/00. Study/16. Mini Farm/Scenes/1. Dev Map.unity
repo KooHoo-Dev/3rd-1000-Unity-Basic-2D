@@ -226,7 +226,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &628212117
 SpriteRenderer:
   serializedVersion: 2
@@ -545,7 +545,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1688871822
 SpriteRenderer:
   serializedVersion: 2
@@ -668,8 +668,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Study.MiniFarm.PathFinder
   mapData: {fileID: 0}
   mapLoader: {fileID: 2069804423}
-  startMarker: {fileID: 1872201}
   goalMarker: {fileID: 1113503607}
+  startMarker: {fileID: 1872201}
   drawVisited: 0
   drawPath: 1
 --- !u!1 &2069804422
