@@ -35,7 +35,8 @@ namespace Study.MiniFarm
             if (direction == Vector2.zero) return; 
             
             Vector3 moveVector = direction.normalized * scrollSpeed * Time.deltaTime;
-            transform.position += moveVector;
+            Vector3 newPosition = transform.position + moveVector;
+            transform.position = Clamp(newPosition);
         }
 
         // 마우스가 있는 경계면을 읽어주는 함수.
@@ -68,7 +69,30 @@ namespace Study.MiniFarm
         }
         
         // --- 아래부터는 경계 붙잡기 로직들 ---
-        
-        
+
+        // 카메라가 보는 사각형이 맵 안에 들어오도록 위치를 조정해서 반환하는 함수.
+        private Vector3 Clamp(Vector3 position)
+        {
+            // orthographic : 직교 카메라. size의 경우 "세로 절반"을 의미합니다.
+            float halfHeight = cam.orthographicSize;
+            // aspect ratio : 이미지, 화면 혹은 물체의 너비와 높이의 비율을 뜻합니다
+            float halfWidth = cam.aspect * halfHeight;
+
+            float x = ClampAxis(position.x, mapMin.x, mapMax.x, halfWidth);
+            float y = ClampAxis(position.y, mapMin.y, mapMax.y, halfHeight);
+
+            return new Vector3(x, y, position.z);
+        }
+
+        // X,Y 중 한축을 맵 안에 가두는 함수 입니다.
+        private float ClampAxis
+            (float value, float min, float max, float halfSize)
+        {
+            // x나 y가 넘어서면 안되는 값을 먼저 설정해줍니다. 
+            float limitMin = min + halfSize;
+            float limitMax = max - halfSize;
+            
+            return Mathf.Clamp(value, limitMin, limitMax);
+        }
     }
 }
