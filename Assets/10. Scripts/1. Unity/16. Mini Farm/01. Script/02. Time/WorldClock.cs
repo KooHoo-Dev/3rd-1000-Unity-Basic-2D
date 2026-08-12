@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Jay;
 using UnityEngine;
 
@@ -49,7 +50,109 @@ namespace Study.MiniFarm
 
         #endregion
 
+        // 디폴트 상수 두개 선언
+        private const int PAUSED_STEP = 0;
+        private const int DEFAULT_STEP = 1; 
+        
         private GameSettings settings;
+        private float tickTimer;
+        // 일시정지 직전에 쓰던 배속. 일시정지가 끝나면 되돌아가기 위해 필요한 변수
+        private int lasRunningStep = DEFAULT_STEP;
+
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
+            // 게임 세팅의 인스턴스를 캐싱해준다
+            settings = GameSettings.Instance;
+            ScaleStep = DEFAULT_STEP;
+            // DOTween의 타임 스케일을 WorldClock의 스케일로 바꿔준다
+            DOTween.timeScale = Scale;
+        }
+
+        private void Start()
+        {
+            // 첫프레임이 동작하면 첫날 아침을 일단 알려준다.
+            // 기록된 데이터(사용자 데이터)를 통해서 오늘이 몇일인지 알려주게 된다.
+            OnDayStarted?.Invoke(Day);
+        }
+
+        private void Update()
+        {
+            float delta = DeltaTime;
+            if (delta <= 0f) return;            
+            AdvanceTick(delta);
+            AdvanceDay(delta);
+        }
+
+        #region 시간 진행
+
+        private void AdvanceTick(float delta)
+        {
+            // 틱타이머를 갱신해주고
+            tickTimer += delta;
+            // 임계점에 도달하지 않았으면 return
+            if (tickTimer < tickInterval) return;
+
+            // 틱타이머가 설정된 tickInterval 도달했으므로 빼주고(0해도 됨)
+            tickTimer = 0; // 혹몰라서 넣어놓음 : tickTimer -= tickInterval;
+            // OnTick을 구독하는 객체들에게 알려준다
+            OnTick?.Invoke();
+        }
+
+        public void AdvanceDay(float delta)
+        {
+            TimeOfDay += delta / settings.DayLengthSeconds;
+            if (TimeOfDay < 1f) return;
+
+            TimeOfDay = 0f; // 혹시 몰라서 남겨둠 : TimeOfDay -= 1f;
+            OnDayEnded?.Invoke(Day); // 현재의 Day가 종료되었다!
+
+            // 게임 종료체크를 해준다
+            if (Day >= settings.TotalDays)
+            {
+                IsFinished = true;
+                return;
+            }
+            else
+            {
+                Day++;
+                OnDayStarted?.Invoke(Day);
+            }            
+        }
+
+        #endregion
+
+        #region 배속
+
+        // 배속 단계를 설정해준다. GameSettings의 TimeScales를 참고하며 
+        // 인덱스를 변경해서 배속 단계를 바꾼다
+        public void SetScaleStep(int step)
+        {
+            // 기본적인 예외처리. 로그는 안남기겠습니다(가밸할떄는 남기십쇼)
+            if(step < 0 || settings.TimeScales.Length <= step) return;
+            if (step == ScaleStep) return;
+            
+            bool wasPaused = IsPaused;
+            
+            if (step == PAUSED_STEP) lasRunningStep = ScaleStep;
+            
+            ScaleStep = step;
+            DOTween.timeScale = Scale;
+
+            // 정지된 상태에서 => 정지가 풀린거 
+            if(wasPaused) OnPauseChanged?.Invoke(IsPaused);
+        }
+
+        public void Pause() => SetScaleStep(PAUSED_STEP);
+        public void Resume() => SetScaleStep(lasRunningStep);
+
+        public void TogglePause()
+        {
+            if(IsPaused) Resume();
+            else Pause();
+        }
+        
+        #endregion
     }
 
 }
