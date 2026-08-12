@@ -25,8 +25,8 @@ namespace Study.MiniFarm
         // 지금 고른 배속 단계. int인 이유는 외부파일의 배열 데이터 인덱스로 사용함
         public int ScaleStep { get;private set; } = 1;
 
-        public float Scale => scale; 
-        private float scale = 1f; // GameSetting으로 추후 수정
+        public float Scale => settings.TimeScales[ScaleStep]; 
+        
         
         public bool IsPaused => Scale <= 0f;
 
@@ -48,6 +48,8 @@ namespace Study.MiniFarm
         public event Action<bool> OnPauseChanged;   // Pause의 상태 변화
 
         #endregion
+
+        private GameSettings settings;
     }
 
 }
