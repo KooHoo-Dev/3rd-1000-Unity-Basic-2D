@@ -68,7 +68,8 @@ namespace Study.MiniFarm
         {
             // 이전에 다 자랐는지 체크하기 위한 지역변수
             bool wasGrown = IsGrown;
-            if (WateredToDay && IsGrown == false) GrowthStage++;
+            // if (WateredToDay && IsGrown == false) GrowthStage++;
+            if (IsGrown == false) GrowthStage++;
             WateredToDay = false;
             Refresh();
             

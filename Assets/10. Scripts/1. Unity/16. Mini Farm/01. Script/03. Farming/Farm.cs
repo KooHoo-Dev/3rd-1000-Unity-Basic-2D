@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Study.MiniFarm
@@ -20,6 +21,7 @@ namespace Study.MiniFarm
         AlreadyGrown,       // 다 자라서 물 줄 필요가 없음
         NotGrown,           // 아직 덜 자라서 수확 불가능
         NoSeed,             // 씨앗이 없어서 심을게 없음
+        UnknownError
     }
 
     public static class FarmResultText
@@ -63,10 +65,6 @@ namespace Study.MiniFarm
 
         [Header("Crops")] 
         [SerializeField] private Crop[] cropPrefabs;
-        // 좌표와 작물의 정보를 저장하는 딕셔너리
-        private readonly Dictionary<Vector2Int, Crop> crops = new();
-        // 작물이 심어지면 해당칸의 TitleType을 덮어씌워 주는 용도
-        private const TileType BLOCKED_TYPE = TileType.Rock;
 
         private WorldClock clock;
         
@@ -74,17 +72,83 @@ namespace Study.MiniFarm
         private FarmGrid Grid => pathFinder.Grid;
         private MapData MapData => pathFinder.MapData;
 
+        # region Unity Method
+
+        private void OnEnable()
+        {
+            clock = WorldClock.Instance;
+            clock.OnDayEnded += HandleDayEnded;
+        }
+
+        private void OnDisable()
+        {
+            if(clock != null) clock.OnDayEnded -= HandleDayEnded;
+        }
+
+        #endregion
+        
         # region 네 가지 행동
 
-        // 밭을 가는 해동. (흙 -> 밭)
-        public FarmResult Till()
+        // 함수 오버로딩을 이용한 편의성 함수
+        public FarmResult Till(Vector3 worldPosition)
         {
+            Vector2Int coord = Grid.WorldToCell(worldPosition);
+            return Till(coord);
+        }
+        
+        // 밭을 가는 해동. (흙 -> 밭)
+        public FarmResult Till(Vector2Int coord)
+        {
+            Tile tile  = Grid.GetTileOrNull(coord);
+            
+            if(tile == null) return FarmResult.WrongTile;                     // 타일이 없다면
+            if(tile.Type == TileType.Tilled) return FarmResult.AlreadyTilled; // 이미 갈려있는 타입이라면
+            if (tile.IsTillable == false) return FarmResult.WrongTile;        // 갈수있타일이 아니라면
+
+            // Tilled 타입의 정의 객체(def)를 가지고 와서
+            TileDef tilledTileDef = DataManager.Instance.Tiles.Get(TileType.Tilled);
+            // coord좌표의 타일의 타입을 바꿔준다
+            tile.ChangeType(tilledTileDef);
+            RefreshOverLay(coord);
             return FarmResult.Ok;
         }
 
-        // 씨앗을 심는 행동
-        public FarmResult Sow()
+        // 좌표와 작물의 정보를 저장하는 딕셔너리
+        private readonly Dictionary<Vector2Int, Crop> crops = new();
+        // 작물이 심어지면 해당칸의 TitleType을 덮어씌워 주는 용도
+        private const TileType BLOCKED_TYPE = TileType.Rock;
+
+        public FarmResult Sow(Vector3 worldPosition, int cropId)
         {
+            Vector2Int coord = Grid.WorldToCell(worldPosition);
+            return Sow(coord, cropId);
+        }
+        
+        // 씨앗을 심는 행동
+        public FarmResult Sow(Vector2Int coord, int cropId)
+        {
+            Tile tile  = Grid.GetTileOrNull(coord);
+            if (tile == null) return FarmResult.WrongTile;  // 타일이 없다면
+            if (tile.Type != TileType.Tilled) return FarmResult.WrongTile; // 갈려있지 않다면
+            if (crops.ContainsKey(coord)) return FarmResult.AlreadyPlanted; // coord 좌표에 작물이 있다면
+
+            Crop sample = null;
+            foreach (Crop prefab in cropPrefabs)
+            {
+                if (prefab.ID == cropId) sample = prefab;
+            }
+            
+            if(null == sample) return FarmResult.UnknownError;
+            
+            // 타일 가져오고
+            Transform tileTransform = MapData.GetTileTransformOrNull(coord);
+            // cropPrefab을 이용해서 똑같은 작물 생성해주고, 타일의 자식으로 배치
+            Crop crop = Instantiate(sample, tileTransform);
+            // 생성한 작물의 로컬좌표를 0,0,0 으로 초기화
+            crop.transform.localPosition = Vector3.zero;
+            // 작물을 관리하는 딕셔너리에 넣고
+            crops.Add(coord, crop);
+            // 종료
             return FarmResult.Ok;
         }
 
@@ -102,6 +166,8 @@ namespace Study.MiniFarm
         
         # endregion
 
+        #region 오버레이
+
         private class Overlay
         {
             public GameObject Object;
@@ -109,7 +175,7 @@ namespace Study.MiniFarm
         }
 
         private readonly Dictionary<Vector2Int, Overlay> overlays = new();
-        private Dictionary<string, GameObject> overlaysPrefabs; // 오버레이 견본들. 땜빵
+        private readonly Dictionary<string, GameObject> overlaysPrefabs = new(); // 오버레이 견본들. 땜빵
         
         // coord 칸의 덧그림을 종류에 맞춘다.
         // 무엇을 씌울지는 코드가 정하지 않음. tiles.tsv에 별도의 OverlayKey를 활용함
@@ -157,5 +223,17 @@ namespace Study.MiniFarm
             Destroy(current.Object);
             overlays.Remove(coord);
         }
+
+        #endregion
+
+
+        private void HandleDayEnded(int day)
+        {
+            foreach (Crop crop in crops.Values)
+            {
+                crop.Grow();
+            }
+        }
+        
     }
 }

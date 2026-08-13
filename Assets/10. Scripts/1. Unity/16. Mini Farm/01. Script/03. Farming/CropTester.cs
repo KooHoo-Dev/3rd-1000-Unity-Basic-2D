@@ -16,7 +16,6 @@ namespace Study.MiniFarm
                 foreach (var crop in crops)
                 {
                     crop.Water();
-                    crop.Grow();
                 }
             }
         }
