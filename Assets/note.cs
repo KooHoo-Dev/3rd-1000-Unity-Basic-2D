@@ -2,28 +2,28 @@
 
 
 using System;
+using System.Collections.Generic;
 using Study.Utilities;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Note : MonoBehaviour
 {
-    private Animator anim;
-
-    private void Start()
-    {
-        anim = GetComponent<Animator>();
-    }
-
+    private string[] leaders = new[] { "이찬영", "채경희", "백성현", "홍산", "이강민" };
+    private List<string> bucket = new List<string>();
+    
     private void Update()
     {
-        var input = SimpleInput.GetMoveAxisRaw();
-        anim.SetFloat("DirX", input.x);
-        anim.SetFloat("DirY", input.y);
-
-        if (input.x < 0)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            bucket.AddRange(leaders);
+
+            while (bucket.Count > 0)
+            {
+                int rand = Random.Range(0, bucket.Count);
+                Debug.Log(bucket[rand]);
+                bucket.RemoveAt(rand);
+            }
         }
-        
     }
 }
