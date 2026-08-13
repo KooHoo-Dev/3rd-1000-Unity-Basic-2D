@@ -77,36 +77,85 @@ namespace Study.MiniFarm
         # region 네 가지 행동
 
         // 밭을 가는 해동. (흙 -> 밭)
-        public void Till()
+        public FarmResult Till()
         {
-            
+            return FarmResult.Ok;
         }
 
         // 씨앗을 심는 행동
-        public void Sow()
+        public FarmResult Sow()
         {
-            
+            return FarmResult.Ok;
         }
 
         // 물을 주는 행동
-        public void Water()
+        public FarmResult Water()
         {
-            
+            return FarmResult.Ok;
         }
         
         // 다 자란 작물을 거둔다
-        public void Harvest()
+        public FarmResult Harvest()
         {
-            
+            return FarmResult.Ok;
         }
         
         # endregion
+
+        private class Overlay
+        {
+            public GameObject Object;
+            public TileType Type;
+        }
+
+        private readonly Dictionary<Vector2Int, Overlay> overlays = new();
+        private Dictionary<string, GameObject> overlaysPrefabs; // 오버레이 견본들. 땜빵
         
+        // coord 칸의 덧그림을 종류에 맞춘다.
+        // 무엇을 씌울지는 코드가 정하지 않음. tiles.tsv에 별도의 OverlayKey를 활용함
         
         
         private void RefreshOverLay(Vector2Int coord)
         {
+            // Null을 반환할수도 있으므로 coord 좌표의 바운드 체크를 먼저 해준다.
+            if (Grid.InBounds(coord) == false) return;
+            TileDef def = Grid.GetTileOrNull(coord).Def;
             
+            // 처리할 오버레이 객체가 없다면
+            if (string.IsNullOrEmpty(def.OverlayKey)) return;
+            
+            // Overlay가 존재하고, 타입도 동일(Def의 타입)하면 return;
+            if (overlays.TryGetValue(coord, out Overlay current))
+            {
+                if (current.Type == def.TileType) return;
+            }
+            
+            // --- 밑에서부터는 바꾸거나 생성하는 로직 ---
+            RemoveOverlay(coord); // 오버레이 비워주고
+
+            // 땜빵용으로 넣어준거임 아래 두줄
+            if (overlaysPrefabs.ContainsKey(def.OverlayKey) == false)
+                overlaysPrefabs.Add(def.OverlayKey, Resources.Load<GameObject>(def.OverlayKey));
+            
+            // 오버레이 프리펩 골라주고
+            GameObject prefab =  overlaysPrefabs[def.OverlayKey];
+            // 배치할 타일 트랜스폼 가져오고
+            Transform tileTransform = MapData.GetTileTransformOrNull(coord);
+            // tileTransform의 자식으로 생성해준다
+            GameObject overlay = Instantiate(prefab, tileTransform);
+            // overlay의 로컬 좌표를 0,0,0으로 변경해서 부모(tileTransform)와 동일한 위치에 있도록 수정한다
+            overlay.transform.localPosition = Vector3.zero;
+            // overlays 딕셔너리 coord키에 새로운 Overlay 객체를 생성해서 넣어준다
+            overlays[coord] = new Overlay(){Object = overlay, Type = def.TileType};
+        }
+
+        // coord 좌표에 오버레이가 없다면 return
+        // 있다면 삭제처리한다
+        private void RemoveOverlay(Vector2Int coord)
+        {
+            if (overlays.TryGetValue(coord, out Overlay current) == false) return;
+            Destroy(current.Object);
+            overlays.Remove(coord);
         }
     }
 }
