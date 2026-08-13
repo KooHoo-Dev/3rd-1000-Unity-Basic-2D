@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Study.MiniFarm
@@ -32,6 +33,7 @@ namespace Study.MiniFarm
         private void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
+            Refresh();
         }
 
         public void Restore()
@@ -73,7 +75,7 @@ namespace Study.MiniFarm
             // 방금 다 자랐는지만 체크해줘서. 특별한 효과를 준다
             if (wasGrown == false && IsGrown) // 조건식이 true라면 이번 Grow 호출때 다 자란거임
             {
-                PlayGrownEffect();
+                transform.DOPunchScale(Vector3.one * 0.3f, 0.3f);
             }
         }
         
@@ -94,11 +96,6 @@ namespace Study.MiniFarm
             float ratio = (float)GrowthStage / GrowDays;
             int result = Mathf.FloorToInt(ratio * last);
             return Mathf.Clamp(result, 0, sprites.Length - 1);
-        }
-
-        private void PlayGrownEffect()
-        {
-            
         }
         
         #endregion
