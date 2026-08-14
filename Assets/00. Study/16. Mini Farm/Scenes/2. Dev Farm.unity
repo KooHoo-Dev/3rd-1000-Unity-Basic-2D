@@ -290,7 +290,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &628212117
 SpriteRenderer:
   serializedVersion: 2
@@ -725,7 +725,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1688871822
 SpriteRenderer:
   serializedVersion: 2
@@ -905,7 +905,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1837965983}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2554b377581741f9ad52a0d36bcd8b4c, type: 3}
   m_Name: 
@@ -1029,63 +1029,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1415326288}
   m_SourcePrefab: {fileID: 100100000, guid: 37431aafe1dca4a479c3e0da55ee405e, type: 3}
---- !u!1001 &2542640276463695085
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1176199613022630635, guid: 7554d20e94bfb4f4fb8c648764c0ac1d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 8.46
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176199613022630635, guid: 7554d20e94bfb4f4fb8c648764c0ac1d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9.48
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176199613022630635, guid: 7554d20e94bfb4f4fb8c648764c0ac1d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -14.144407
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176199613022630635, guid: 7554d20e94bfb4f4fb8c648764c0ac1d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176199613022630635, guid: 7554d20e94bfb4f4fb8c648764c0ac1d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176199613022630635, guid: 7554d20e94bfb4f4fb8c648764c0ac1d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176199613022630635, guid: 7554d20e94bfb4f4fb8c648764c0ac1d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176199613022630635, guid: 7554d20e94bfb4f4fb8c648764c0ac1d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176199613022630635, guid: 7554d20e94bfb4f4fb8c648764c0ac1d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176199613022630635, guid: 7554d20e94bfb4f4fb8c648764c0ac1d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6748201833817996802, guid: 7554d20e94bfb4f4fb8c648764c0ac1d, type: 3}
-      propertyPath: m_Name
-      value: TilledSoil
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7554d20e94bfb4f4fb8c648764c0ac1d, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1099,4 +1042,3 @@ SceneRoots:
   - {fileID: 1116221560}
   - {fileID: 1837965986}
   - {fileID: 350092163}
-  - {fileID: 2542640276463695085}
