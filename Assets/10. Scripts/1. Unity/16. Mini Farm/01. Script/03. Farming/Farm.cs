@@ -69,8 +69,8 @@ namespace Study.MiniFarm
         private WorldClock clock;
         
         // 아래 두개는 추후 수정
-        private FarmGrid Grid => pathFinder.Grid;
-        private MapData MapData => pathFinder.MapData;
+        private FarmGrid Grid;
+        private MapData MapData;
 
         # region Unity Method
 
@@ -281,6 +281,11 @@ namespace Study.MiniFarm
                 crop.Grow();
             }
         }
-        
+
+        public void Init(MapData mapData, FarmGrid grid)
+        {
+            MapData = mapData;
+            Grid = grid;
+        }
     }
 }

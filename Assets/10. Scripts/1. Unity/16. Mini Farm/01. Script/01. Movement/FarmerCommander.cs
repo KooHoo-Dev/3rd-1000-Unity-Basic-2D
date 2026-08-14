@@ -40,7 +40,7 @@ namespace Study.MiniFarm
             this.goal = g;
             this.speed = s;
         }
-        
+
         public IEnumerator Execute(FarmerController farmer)
         {
             Transform body = farmer.transform;
@@ -176,6 +176,11 @@ namespace Study.MiniFarm
         }
 
         # region Public Methods
+        
+        public void Init(PathFinder pathFinder)
+        {
+            this.pathFinder = pathFinder;
+        }
         
         // 지정한 월드 지점까지 걸어간다.
         // PathFinder를 이용해서 웨이포인트를 가져오고 해당 포인트를 이용해서
