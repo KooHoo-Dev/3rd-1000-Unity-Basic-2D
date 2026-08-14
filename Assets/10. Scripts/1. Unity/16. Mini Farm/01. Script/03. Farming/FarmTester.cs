@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Study.Utilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,6 +12,9 @@ namespace Study.MiniFarm
         public Farm farm;
 
         private int index = 0;
+
+       
+        
         
         private void Update()
         {

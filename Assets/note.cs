@@ -1,29 +1,31 @@
 
-
-
-using System;
-using System.Collections.Generic;
+using System.Collections;
+using System.Threading.Tasks;
 using Study.Utilities;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Note : MonoBehaviour
 {
-    private string[] leaders = new[] { "이찬영", "채경희", "백성현", "홍산", "이강민" };
-    private List<string> bucket = new List<string>();
-    
-    private void Update()
+    private async void Start()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            bucket.AddRange(leaders);
+        Debug.Log("비동기 함수 시작!");
+        await Task.Delay(5000);
+        Debug.Log("await Task.Delay(5000);");
+        
+        int resultA = await Delay(5000);
+        Debug.Log($"resultA = {resultA}");
+        
+        int resultB = await Delay(3000);
+        Debug.Log($"resultB = {resultB}");
+        
+        int resultC = await Delay(7000);
+        Debug.Log($"resultC = {resultC}");
+        
+    }
 
-            while (bucket.Count > 0)
-            {
-                int rand = Random.Range(0, bucket.Count);
-                Debug.Log(bucket[rand]);
-                bucket.RemoveAt(rand);
-            }
-        }
+    private async Task<int> Delay(int milliseconds)
+    {
+        await Task.Delay(milliseconds);
+        return milliseconds;
     }
 }

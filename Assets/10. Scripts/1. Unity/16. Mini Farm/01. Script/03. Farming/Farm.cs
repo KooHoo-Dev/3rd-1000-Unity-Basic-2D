@@ -60,18 +60,22 @@ namespace Study.MiniFarm
     
     public class Farm : MonoBehaviour
     {
-        [Header("References")] 
-        [SerializeField] private PathFinder pathFinder;
-
         [Header("Crops")] 
         [SerializeField] private Crop[] cropPrefabs;
 
         private WorldClock clock;
-        
-        // 아래 두개는 추후 수정
-        private FarmGrid Grid => pathFinder.Grid;
-        private MapData MapData => pathFinder.MapData;
 
+        private MapData MapData { get; set; }
+        private FarmGrid Grid { get; set; }
+
+        // Farm 구동을 위해서는 아래의 두가지 객체가 꼭 필요함\
+        // 초기화시 넣어줄것
+        public void Init(MapData mapData, FarmGrid grid)
+        {
+            MapData = mapData;
+            Grid = grid;
+        }
+        
         # region Unity Method
 
         private void OnEnable()

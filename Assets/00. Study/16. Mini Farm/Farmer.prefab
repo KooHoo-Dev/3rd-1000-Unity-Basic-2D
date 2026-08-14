@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2134644201020968963}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -124,7 +124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4615492608573527789}
   - component: {fileID: 754470645848876617}
-  - component: {fileID: 4312495318797575692}
+  - component: {fileID: 1711740336237626277}
   m_Layer: 0
   m_Name: Farmer
   m_TagString: Untagged
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmerController
   artFacesRight: 1
---- !u!114 &4312495318797575692
+--- !u!114 &1711740336237626277
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,7 +170,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3957863328090827113}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e68f6e79ba0400698b8b4c04701abbe, type: 3}
+  m_Script: {fileID: 11500000, guid: f26415f3d9394f799bd91e6b527a453f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Study.MiniFarm.FarmerTester
+  m_EditorClassIdentifier: Assembly-CSharp::Study.MiniFarm.FarmerCommander
+  pathFinder: {fileID: 0}
+  viewCamera: {fileID: 0}
   moveSpeed: 3
