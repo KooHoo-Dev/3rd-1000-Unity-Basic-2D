@@ -1,11 +1,14 @@
 
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Study.Utilities;
 using UnityEngine;
 
 public class Note : MonoBehaviour
 {
+    private readonly Dictionary<int, int> notes = new();
+    
     private async void Start()
     {
         Debug.Log("비동기 함수 시작!");
