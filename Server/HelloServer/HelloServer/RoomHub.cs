@@ -1,4 +1,6 @@
-﻿namespace HelloServer;
+﻿using System.Net.WebSockets;
+
+namespace HelloServer;
 
 // 여러개의 방들을 관리하는 클래스.
 // 코드로 방을 찾아주고, 빈 방을 치운다, 
@@ -53,7 +55,8 @@ public class RoomHub
         {
             if (rooms.TryGetValue(code, out Entry entry) == false)
             {
-                entry = new Entry(){Room = new Room(), Users = 0};
+                entry = new Entry()
+                    {Room = new Room(code, logMovesPerSecond), Users = 0};
                 rooms.Add(code, entry);
                 Console.WriteLine($"[{code}] 방을 열었다. 총 방의 개수 : {rooms.Count}");
             }
@@ -63,11 +66,43 @@ public class RoomHub
         }
     }
 
-    // 방을 떠나보고, 아무도 없으면 방을 지운다.
+    // 방을 떠나고, 아무도 없으면 방을 지운다.
     private void Leave(string code)
+    {
+        lock (gate)
+        {
+            // 예외 처리 한번 해준다
+            if (rooms.TryGetValue(code, out Entry entry) == false) return;
+            entry.Users--;
+            if (entry.Users > 0) return;
+            rooms.Remove(code);
+            Console.WriteLine($"[{code}] 아무도 없어서 방을 지움. 총 방의 개수 {rooms.Count}");
+        }
+    }
+
+    #endregion
+
+    // 아래의 비동기 함수는 한 사람의 접속부터 끊김까지
+    // 방을 찾아 넘기고, 끝나면 뒷정리하는 함수 입니다.
+    // (RoomHub -> Room의 함수를 호출)
+    public async Task HandleAsync(string code, 
+        WebSocket socket, CancellationToken token)
     {
         
     }
 
-    #endregion
+    // 보든 방에 시간(일정 주기)별로 틱을 관리하는 함수 입니다.
+    // 틱을 관리하면서 Task.WhenAll을 통해서 방의 메시지들을 방송합니다.
+    // (RoomHub -> Room의 함수를 호출)
+    public async Task BroadcastLoopAsync(CancellationToken token)
+    {
+        
+    }
+
+    // 방 코드를 정규화 하는 유틸 함수입니다.
+    // 빈 문자처리, 특수문자 처리등을 합니다.
+    public static string Normalize(string raw)
+    {
+        
+    }
 }
