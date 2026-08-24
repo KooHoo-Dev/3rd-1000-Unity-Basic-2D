@@ -26,6 +26,25 @@ public class Program
     
     public static void Main(string[] args)
     {
+        Console.OutputEncoding = Encoding.UTF8;
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        
+        builder.Services.ConfigureHttpJsonOptions(
+            options => options.SerializerOptions.PropertyNamingPolicy = null);
+        
+        WebApplication app = builder.Build();
+        
+        // 서버에 방을 추가해 줍시다.
+        
+        app.UseWebSockets();
+        app.MapGet("/ping", () => "pong");
+        
+        app.Run("http://0.0.0.0:5000");
+    }
+
+
+    private static void HttpStudy(string[] args)
+    {
         // 잊지 말고 해줘야 할것이. 우리는 한글은 쓴다
         // 한글 출력을 위해 OutputEncoding을 설정해준다
         Console.OutputEncoding = Encoding.UTF8;
@@ -96,5 +115,6 @@ public class Program
 
 
         app.Run("http://0.0.0.0:5000");
+        
     }
 }
