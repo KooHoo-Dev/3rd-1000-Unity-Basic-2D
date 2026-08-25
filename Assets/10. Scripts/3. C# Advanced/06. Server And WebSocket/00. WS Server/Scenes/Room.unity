@@ -337,6 +337,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2061268593}
   - component: {fileID: 2061268592}
+  - component: {fileID: 2061268594}
   m_Layer: 0
   m_Name: RoomClient
   m_TagString: Untagged
@@ -356,8 +357,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810bdfb19dcb94b4186121c042588960, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Study.LocalServer.RoomClient
-  url: ws://localhost:5000/room
+  url: ws://192.168.0.34:5000/room
   nickName: Jay
+  roomCode: ABCD
   localPlayer: {fileID: 283337098}
   remotePrefab: {fileID: 3577986437508677583, guid: d1c4df9245221e34dbcc69310da369c0, type: 3}
   sendPerSecond: 20
@@ -376,6 +378,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2061268594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061268591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 048741b19b0c4bd98b650d15f17e13d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HelloServer.RoomLobby
+  nickName: "\uC774\uB984\uC5C6\uC74C"
+  roomCode: ABCD
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

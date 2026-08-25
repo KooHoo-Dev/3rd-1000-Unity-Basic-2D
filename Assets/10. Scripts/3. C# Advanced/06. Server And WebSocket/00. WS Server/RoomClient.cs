@@ -4,11 +4,16 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Study.Utilities;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Networking;
 
 namespace HelloServer
 {
+    
+    // RoomClient가 서버와의 네트워크 작업을 담당한다.
+    // 송신, 수신 등을 모두 처리하는 객체
     public class RoomClient : MonoBehaviour
     {
         [Header("서버")]
@@ -86,6 +91,7 @@ namespace HelloServer
 
             try
             {
+                // socket을 통해 해당 주소로 접속한다. UnitTask를 사용한다
                 await socket.ConnectAsync(new Uri(full), destroyCancellationToken).AsUniTask();
             }
             catch (Exception e)

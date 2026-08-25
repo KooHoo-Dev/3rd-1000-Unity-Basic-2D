@@ -288,4 +288,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Study.LocalServer.RemotePlayer
   body: {fileID: 5936250482656247870}
   label: {fileID: 2947362006793601264}
-  smooth: 10
+  smooth: 0

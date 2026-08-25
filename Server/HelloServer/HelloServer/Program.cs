@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.Net;
+using System.Net.Sockets;
 using System.Net.WebSockets;
 using System.Text;
 
@@ -159,8 +161,25 @@ public class Program
             await context.Response.WriteAsync(responseMessage);
         });
 
-
+        Announce(perSecond, logMoves);
         app.Run("http://0.0.0.0:5000");
         
+    }
+    
+    // 수업에서 안한 함수
+    private static void Announce(int perSecond, int logMoves)
+    {
+        string moveLog = logMoves <= 0
+            ? "위치 로그는 안 찍는다"
+            : $"위치 로그는 사람마다 초당 {logMoves}줄";
+
+        Console.WriteLine($"[방] 초당 {perSecond}번 뿌린다. {moveLog}.");
+
+        foreach (IPAddress address in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
+        {
+            if (address.AddressFamily != AddressFamily.InterNetwork) continue;
+            if (IPAddress.IsLoopback(address)) continue;
+            Console.WriteLine($"[방] 접속 주소: {address}");
+        }
     }
 }
