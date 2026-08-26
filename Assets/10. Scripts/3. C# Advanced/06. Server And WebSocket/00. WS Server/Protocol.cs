@@ -1,91 +1,85 @@
-﻿using System;
-
-namespace HelloServer
+﻿namespace HelloServer
 {
-    [Serializable]
+    // 서버와 유니티가 주고받는 글자의 모양.
+    // 이 파일은 양쪽에 똑같이 있음
+    //
+    // 다른 것은 맨 윗줄 namespace 하나뿐. (유니티가 C# 버전이 낮아서 생긴일임)
+
     public class User
     {
-        public string Id;
-        public string NickName;
+        public string Id { get; set; }
+        public string NickName { get; set; }
     }
 
-    [Serializable]
+    // 위치 한 줄. 뿌릴 때 이것만 모아서 보낸다.
     public class PlayerState
     {
-        public string Id;
-        public float X;
-        public float Y;
+        public string Id { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
     }
 
-    [Serializable]
     public class TypeOnly
     {
-        public string Type;
+        public string Type { get; set; }
     }
 
     #region 클라이언트 -> 서버
 
-    [Serializable]
     public class HelloMessage
     {
-        public string Type = "hello";
-        public string NickName;
+        public string Type { get; set; } = "hello";
+        public string NickName { get; set; }
     }
 
-    [Serializable]
     public class MoveMessage
     {
-        public string Type = "move";
-        public string Id;
-        public float X;
-        public float Y;
+        public string Type { get; set; } = "move";
+        public string Id { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
     }
 
     #endregion
 
     #region 서버 -> 클라이언트
 
-    [Serializable]
     public class WelcomeMessage
     {
-        public string Type;
+        public string Type { get; set; } = "welcome";
 
-        public string RoomCode;
+        public string RoomCode { get; set; }
 
-        public User User;
-        public User[] Users;
+        public User User { get; set; }
+        public User[] Users { get; set; }
     }
 
-    // 누가 새로 들어왔다.
-    [Serializable]
     public class JoinMessage
     {
-        public string Type;
-        public User User;
+        public string Type { get; set; } = "join";
+        public User User { get; set; }
     }
 
     // 누가 나갔다.
-    [Serializable]
     public class LeaveMessage
     {
-        public string Type;
-        public string Id;
+        public string Type { get; set; } = "leave";
+        public string Id { get; set; }
     }
 
-    [Serializable]
     public class ChatMessage
     {
-        public string Type = "chat";
-        public string Id;
-        public string NickName;
-        public string Text;
+        public string Type { get; set; } = "chat";
+        public string Id { get; set; }
+        public string NickName { get; set; }
+        public string Text { get; set; }
     }
 
-    [Serializable]
+    // 지금 모두의 위치. 초당 몇 번씩 온다. (횟수는 서버의 appsettings.json)
     public class StateMessage
     {
-        public string Type;
-        public PlayerState[] States;
+        public string Type { get; set; } = "state";
+        public PlayerState[] States { get; set; }
     }
 
     #endregion

@@ -4,10 +4,9 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Study.Utilities;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
 
 namespace HelloServer
 {
@@ -165,19 +164,35 @@ namespace HelloServer
         // 받은 글자 하나를 종류에 따라 나눠 준다.
         private void Handle(string json)
         {
-            string type = JsonUtility.FromJson<TypeOnly>(json).Type;
+            // JsonUtility => Newtonsfot.Json의 Json Utility로 변경됨.
+            
+            string type = JsonConvert.DeserializeObject<TypeOnly>(json).Type;
 
             switch (type)
             {
-                case "welcome": OnWelcome(JsonUtility.FromJson<WelcomeMessage>(json)); break;
-                case "join": OnJoin(JsonUtility.FromJson<JoinMessage>(json)); break;
-                case "leave": OnLeave(JsonUtility.FromJson<LeaveMessage>(json)); break;
-                case "state": OnState(JsonUtility.FromJson<StateMessage>(json)); break;
-                case "chat": OnChat(JsonUtility.FromJson<ChatMessage>(json)); break;
-
-                // 모르는 종류는 흘린다. 서버가 먼저 새 소식을 붙여도 여기서 죽지 않게.
+                case "welcome": OnWelcome(JsonConvert.DeserializeObject<WelcomeMessage>(json)); break;
+                case "join": OnJoin(JsonConvert.DeserializeObject<JoinMessage>(json)); break;
+                case "leave": OnLeave(JsonConvert.DeserializeObject<LeaveMessage>(json)); break;
+                case "state": OnState(JsonConvert.DeserializeObject<StateMessage>(json)); break;
+                case "chat": OnChat(JsonConvert.DeserializeObject<ChatMessage>(json)); break;
                 default: Debug.Log($"[방] 등록되지 않은 종류(type) : {type}"); break;
             }
+            
+            // === 아래는 수업중 했던 코드 ---
+            
+            // string type = JsonUtility.FromJson<TypeOnly>(json).Type;
+            
+            // switch (type)
+            // {
+            //     case "welcome": OnWelcome(JsonUtility.FromJson<WelcomeMessage>(json)); break;
+            //     case "join": OnJoin(JsonUtility.FromJson<JoinMessage>(json)); break;
+            //     case "leave": OnLeave(JsonUtility.FromJson<LeaveMessage>(json)); break;
+            //     case "state": OnState(JsonUtility.FromJson<StateMessage>(json)); break;
+            //     case "chat": OnChat(JsonUtility.FromJson<ChatMessage>(json)); break;
+            //
+            //     // 모르는 종류는 흘린다. 서버가 먼저 새 소식을 붙여도 여기서 죽지 않게.
+            //     default: Debug.Log($"[방] 등록되지 않은 종류(type) : {type}"); break;
+            // }
         }
 
         private void OnWelcome(WelcomeMessage message)
@@ -277,7 +292,10 @@ namespace HelloServer
         {
             if (socket == null || socket.State != WebSocketState.Open) return;
 
-            byte[] bytes = Encoding.UTF8.GetBytes(JsonUtility.ToJson(message));
+            // JsonUtility => Newtonsfot.Json의 Json Utility로 변경됨.
+            byte[] bytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
+            // 아래 라인은 바꾸기 전 코드
+            //byte[] bytes = Encoding.UTF8.GetBytes(JsonUtility.ToJson(message));
 
             await sendLock.WaitAsync();
 
